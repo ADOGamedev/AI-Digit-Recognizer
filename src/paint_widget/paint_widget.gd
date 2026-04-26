@@ -1,10 +1,18 @@
 extends TextureRect
 
+@onready var compressed_image_node := $compressed_image
+@onready var overlay := $overlay
+
 @export var use_antialiasing := true
 
+@export var BRUSH_SIZE_INCREMENT = 2
+
 var time_since_update = 0.0
-const UPDATE_INTERVAL = 1.0 / 30.0
+const UPDATE_INTERVAL = 1.0 / 24.0
 var ANTIALISING_WIDTH = 1
+
+const MNIST_DATASET_IMAGE_SIZE = 28
+var compressed_image_array : Array
 
 class ColorConfig:
 	func _init(_bg_color, _brush_base_color, _brush_secondary_color) -> void:
@@ -21,15 +29,22 @@ var DARK_COLOR_CONFIG = ColorConfig.new(Color.BLACK, Color.WHITE, Color.BLACK)
 var curr_color_config = DARK_COLOR_CONFIG
 
 var image: Image
-@export var brush_size := 50
+var compressed_image : Image
+@export var brush_size := 80
 var brush_pixels = []
 
 var prev_mouse_pos = null
 var curr_color = Color.WHITE
 
+@export var grid_visible = false
+
 
 func _ready() -> void:
-	image = Image.create(size.x, size.y, false, Image.FORMAT_RGBA8)
+	size.x = size.y
+
+	init_compressed_image()
+
+	image = Image.create(size.x, size.y, true, Image.FORMAT_RGBA8)
 	image.fill(curr_color_config.bg_color)
 
 	texture = ImageTexture.create_from_image(image)
@@ -37,25 +52,37 @@ func _ready() -> void:
 	compute_brush_pixels()
 
 
+func init_compressed_image() -> void:
+	compressed_image = Image.create(MNIST_DATASET_IMAGE_SIZE, MNIST_DATASET_IMAGE_SIZE, true, Image.FORMAT_RGBA8)
+
+	for i in range(MNIST_DATASET_IMAGE_SIZE):
+		compressed_image_array.append([])
+		compressed_image_array[i].resize(MNIST_DATASET_IMAGE_SIZE)
+		compressed_image_array[i].fill(0)
+
+	compressed_image_node.texture = ImageTexture.create_from_image(compressed_image)
+
+
 func _process(delta: float) -> void:
 	handle_input()
 
-	queue_redraw()
+	overlay.queue_redraw()
 	
 	print(Engine.get_frames_per_second())
 
 	time_since_update += delta
 	if time_since_update > UPDATE_INTERVAL:
 		texture.update(image)
+		update_compressed_image()
 		time_since_update = 0.0
 
 
 func handle_input() -> void:
 	if Input.is_action_just_pressed("mouse_wheel_up"):
-		brush_size = max(1, brush_size + 1)
+		brush_size = max(1, brush_size + BRUSH_SIZE_INCREMENT)
 		compute_brush_pixels()
 	elif Input.is_action_just_pressed("mouse_wheel_down"):
-		brush_size = max(1, brush_size - 1)
+		brush_size = max(1, brush_size - BRUSH_SIZE_INCREMENT)
 		compute_brush_pixels()
 
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
@@ -76,22 +103,19 @@ func handle_input() -> void:
 	prev_mouse_pos = mouse_pos
 
 
-func _draw() -> void:
-	draw_brush_overlay()
+func update_compressed_image() -> void:
+	var resized_image = image.duplicate()
+	resized_image.resize(MNIST_DATASET_IMAGE_SIZE, MNIST_DATASET_IMAGE_SIZE, Image.INTERPOLATE_LANCZOS)
+	compressed_image_node.texture.update(resized_image)
+
+	update_compressed_image_array()
 
 
-func draw_brush_overlay() -> void:
-	var mouse_pos = get_local_mouse_position()
-	if pixel_out_of_bounds(mouse_pos):
-		return
-
-	const arc_width = 0.5
-	var arc_radius = (brush_size - arc_width) / 2.
-	var circle_radius = brush_size / 2.
-
-	draw_circle(mouse_pos, circle_radius, curr_color, true)
-	draw_arc(mouse_pos, arc_radius + 2*arc_width, 0, 2 * PI, 32, Color.BLACK, arc_width, true)
-	draw_arc(mouse_pos, arc_radius, 0, 2 * PI, 32, Color.WHITE, arc_width, true)
+func update_compressed_image_array() -> void:
+	for y in range(MNIST_DATASET_IMAGE_SIZE):
+		for x in range(MNIST_DATASET_IMAGE_SIZE):
+			var value = compressed_image.get_pixel(x, y).r / 255
+			compressed_image_array[y][x] = value
 
 
 func compute_brush_pixels() -> void:
@@ -177,3 +201,12 @@ func pixel_out_of_bounds(pos: Vector2) -> bool:
 func clear() -> void:
 	image.fill(curr_color_config.bg_color)
 	texture.update(image)
+
+
+func set_compressed_image_visibility(visible: bool) -> void:
+	compressed_image_node.visible = visible
+	overlay.queue_redraw()
+
+func set_grid_visibility(visible: float) -> void:
+	grid_visible = visible
+	overlay.queue_redraw()
