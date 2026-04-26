@@ -1,8 +1,9 @@
 extends TextureRect
 
-@export var LINE_PRECISSION := 4.0
 @export var use_antialiasing := true
 
+var time_since_update = 0.0
+const UPDATE_INTERVAL = 1.0 / 30.0
 var ANTIALISING_WIDTH = 1
 
 class ColorConfig:
@@ -36,12 +37,18 @@ func _ready() -> void:
 	compute_brush_pixels()
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	handle_input()
 
 	queue_redraw()
 	
 	print(Engine.get_frames_per_second())
+
+	time_since_update += delta
+	if time_since_update > UPDATE_INTERVAL:
+		texture.update(image)
+		time_since_update = 0.0
+
 
 func handle_input() -> void:
 	if Input.is_action_just_pressed("mouse_wheel_up"):
@@ -102,14 +109,7 @@ func line(pos1: Vector2, pos2: Vector2, color: Color) -> void:
 	if !pos1 or !pos2:
 		return
 
-	var steps = max(1, int(pos1.distance_to(pos2) / max(1, brush_size / LINE_PRECISSION)))
-	for i in range(steps + 1):
-		var t = float(i) / steps
-
-		var pixel_pos = lerp(pos1, pos2, t)
-		paint(pixel_pos, color)
-
-	texture.update(image)
+	draw_capsule(pos1, pos2, color)
 
 
 func paint(pos: Vector2, color: Color) -> void:
@@ -118,21 +118,56 @@ func paint(pos: Vector2, color: Color) -> void:
 
 	for offset in brush_pixels:
 		var pixel_pos = ipos + offset
+		var dist = offset.length()
 
-		if pixel_out_of_bounds(pixel_pos):
-			continue
-
-		var color_to_set = color
-		var pixel_color = image.get_pixelv(pixel_pos)
+		draw_pixel(pixel_pos, radius, dist, color)
 
 
-		if use_antialiasing:
-			var dist = offset.length()
-			var alpha = clamp(radius - dist, 0.0, 1.0)
+func draw_capsule(pos1: Vector2, pos2: Vector2, color: Color) -> void:
+	var radius = brush_size / 2. + ANTIALISING_WIDTH
 
-			color_to_set = pixel_color.lerp(color, alpha * color.a)
+	var min_x = clamp(int(min(pos1.x, pos2.x) - radius), 0, image.get_width())
+	var max_x = clamp(int(max(pos1.x, pos2.x) + radius), 0, image.get_width())
 
-		image.set_pixelv(pixel_pos, color_to_set)
+	var min_y = clamp(int(min(pos1.y, pos2.y) - radius), 0, image.get_height())
+	var max_y = clamp(int(max(pos1.y, pos2.y) + radius), 0, image.get_height())
+
+	var diff_vector = pos2 - pos1
+	var diff_vector_length_squared = diff_vector.length_squared()
+
+
+	for y in range(min_y, max_y + 1):
+		for x in range(min_x, max_x + 1):
+			var pixel_pos = Vector2(x, y)
+			var p = pixel_pos - pos1
+
+			var t = clamp( p.dot(diff_vector) / diff_vector_length_squared, 0.0, 1.0)
+			var dist : float
+			if diff_vector_length_squared < 0.0001:
+				dist = pixel_pos.distance_to(pos1)
+			else:
+				dist = pixel_pos.distance_to(pos1 + t * diff_vector)
+
+			if dist > radius:
+				continue
+
+			draw_pixel(pixel_pos, radius, dist, color)
+			
+# Radius: distance from source position to outer-most pixel
+# Dist: distance from pixel to source position
+func draw_pixel(pixel_pos: Vector2, radius: float, dist: float, color: Color) -> void:
+	if pixel_out_of_bounds(pixel_pos):
+		return
+
+	var color_to_set = color
+	var pixel_color = image.get_pixelv(pixel_pos)
+
+	if use_antialiasing:
+		var alpha = clamp(radius - dist, 0.0, 1.0)
+
+		color_to_set = pixel_color.lerp(color, alpha * color.a)
+
+	image.set_pixelv(pixel_pos, color_to_set)
 
 
 func pixel_out_of_bounds(pos: Vector2) -> bool:
