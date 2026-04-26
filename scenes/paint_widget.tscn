@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dn5shfb6ednkk"]
+
+[ext_resource type="Script" uid="uid://cypglvvk42caw" path="res://src/paint_widget/paint_widget.gd" id="1_adckc"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_m0ngg"]
+
+[node name="PaintWidget" type="TextureRect" unique_id=441038753]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ImageTexture_m0ngg")
+script = ExtResource("1_adckc")

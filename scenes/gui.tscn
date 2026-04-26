@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://dkcueo41on5lb"]
+
+[sub_resource type="Shader" id="Shader_66xuh"]
+code = "shader_type canvas_item;
+
+uniform sampler2D noise_texture : repeat_enable;
+uniform float speed = 0.1;
+uniform vec2 direction = vec2(1.0, 0.0);
++
+void fragment() {
+    vec2 uv = UV + direction * TIME * speed;
+    vec4 noise = texture(noise_texture, uv);
+    COLOR = noise;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_efmwq"]
+shader = SubResource("Shader_66xuh")
+
+[node name="gui" type="Control" unique_id=1082492213]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="bg" type="ColorRect" parent="." unique_id=916657779]
+material = SubResource("ShaderMaterial_efmwq")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="PaintWidget" type="Control" parent="." unique_id=1586516190]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
