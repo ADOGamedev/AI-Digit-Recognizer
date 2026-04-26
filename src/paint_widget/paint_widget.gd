@@ -67,8 +67,6 @@ func _process(delta: float) -> void:
 	handle_input()
 
 	overlay.queue_redraw()
-	
-	print(Engine.get_frames_per_second())
 
 	time_since_update += delta
 	if time_since_update > UPDATE_INTERVAL:
@@ -104,9 +102,9 @@ func handle_input() -> void:
 
 
 func update_compressed_image() -> void:
-	var resized_image = image.duplicate()
-	resized_image.resize(MNIST_DATASET_IMAGE_SIZE, MNIST_DATASET_IMAGE_SIZE, Image.INTERPOLATE_LANCZOS)
-	compressed_image_node.texture.update(resized_image)
+	compressed_image = image.duplicate()
+	compressed_image.resize(MNIST_DATASET_IMAGE_SIZE, MNIST_DATASET_IMAGE_SIZE, Image.INTERPOLATE_LANCZOS)
+	compressed_image_node.texture.update(compressed_image)
 
 	update_compressed_image_array()
 
@@ -114,7 +112,7 @@ func update_compressed_image() -> void:
 func update_compressed_image_array() -> void:
 	for y in range(MNIST_DATASET_IMAGE_SIZE):
 		for x in range(MNIST_DATASET_IMAGE_SIZE):
-			var value = compressed_image.get_pixel(x, y).r / 255
+			var value = compressed_image.get_pixel(x, y).r
 			compressed_image_array[y][x] = value
 
 
