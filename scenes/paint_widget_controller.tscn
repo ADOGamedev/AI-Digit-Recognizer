@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://rpmkk6nydgxg"]
+
+[ext_resource type="Script" uid="uid://fai1uef5033d" path="res://src/paint_widget_controller/paint_widget_controller.gd" id="1_i4oy7"]
+[ext_resource type="PackedScene" uid="uid://dn5shfb6ednkk" path="res://scenes/paint_widget.tscn" id="1_jwtmf"]
+
+[node name="PaintWidgetController" type="Control" unique_id=1623632202]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_i4oy7")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1317996040]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=1454638088]
+layout_mode = 2
+theme_override_constants/margin_left = 84
+theme_override_constants/margin_top = 84
+theme_override_constants/margin_right = 84
+theme_override_constants/margin_bottom = 168
+
+[node name="PaintWidget" parent="PanelContainer/MarginContainer" unique_id=289868789 instance=ExtResource("1_jwtmf")]
+layout_mode = 2

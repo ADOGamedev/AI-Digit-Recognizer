@@ -1,7 +1,8 @@
-extends TextureRect
+extends Control
 
-@onready var compressed_image_node := $compressed_image
-@onready var overlay := $overlay
+@onready var image_node := $CenterContainer/image
+@onready var compressed_image_node := $CenterContainer/compressed_image
+@onready var overlay := $CenterContainer/overlay
 
 @export var use_antialiasing := true
 
@@ -40,14 +41,35 @@ var curr_color = Color.WHITE
 
 
 func _ready() -> void:
-	size.x = size.y
-
 	init_compressed_image()
+	_rebuild_canvas()
 
-	image = Image.create(size.x, size.y, true, Image.FORMAT_RGBA8)
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_RESIZED:
+		_rebuild_canvas()
+
+
+func _rebuild_canvas() -> void:
+	var canvas_size = int(min(size.x, size.y))
+	if canvas_size <= 0 or !overlay:
+		return
+
+	var new_size = 	Vector2(canvas_size, canvas_size)
+
+	image_node.custom_minimum_size = new_size
+	image_node.size = new_size
+
+	compressed_image_node.custom_minimum_size = new_size
+	compressed_image_node.size = new_size
+
+	overlay.custom_minimum_size = new_size
+	overlay.size = new_size
+
+	image = Image.create(canvas_size, canvas_size, true, Image.FORMAT_RGBA8)
 	image.fill(curr_color_config.bg_color)
 
-	texture = ImageTexture.create_from_image(image)
+	image_node.texture = ImageTexture.create_from_image(image)
 
 	compute_brush_pixels()
 
@@ -70,7 +92,7 @@ func _process(delta: float) -> void:
 
 	time_since_update += delta
 	if time_since_update > UPDATE_INTERVAL:
-		texture.update(image)
+		image_node.texture.update(image)
 		update_compressed_image()
 		time_since_update = 0.0
 
@@ -92,7 +114,7 @@ func handle_input() -> void:
 		curr_color = curr_color_config.brush_base_color
 		return
 
-	var mouse_pos = get_local_mouse_position()
+	var mouse_pos = image_node.get_local_mouse_position()
 	var line_pos1 = mouse_pos
 	var line_pos2 = prev_mouse_pos if prev_mouse_pos else mouse_pos
 
@@ -198,7 +220,7 @@ func pixel_out_of_bounds(pos: Vector2) -> bool:
 
 func clear() -> void:
 	image.fill(curr_color_config.bg_color)
-	texture.update(image)
+	image_node.texture.update(image)
 
 
 func set_compressed_image_visibility(visible: bool) -> void:

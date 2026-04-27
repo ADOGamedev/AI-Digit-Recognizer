@@ -7,43 +7,40 @@
 
 [sub_resource type="ImageTexture" id="ImageTexture_wkb5n"]
 
-[node name="PaintWidget" type="TextureRect" unique_id=441038753]
-custom_minimum_size = Vector2(1080, 1080)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -540.0
-offset_top = -540.0
-offset_right = 540.0
-offset_bottom = 540.0
+[node name="PaintWidget" type="Control" unique_id=289868789]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("ImageTexture_m0ngg")
 script = ExtResource("1_adckc")
 grid_visible = true
 
-[node name="compressed_image" type="TextureRect" parent="." unique_id=808307503]
-z_index = 1
-texture_filter = 1
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=673378025]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="image" type="TextureRect" parent="CenterContainer" unique_id=441038753]
+layout_mode = 2
+texture = SubResource("ImageTexture_m0ngg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="compressed_image" type="TextureRect" parent="CenterContainer" unique_id=808307503]
+z_index = 1
+texture_filter = 1
+layout_mode = 2
 mouse_filter = 2
 texture = SubResource("ImageTexture_wkb5n")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="overlay" type="Control" parent="." unique_id=1000074024]
+[node name="overlay" type="Control" parent="CenterContainer" unique_id=1000074024]
 z_index = 2
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 script = ExtResource("2_m0ngg")
