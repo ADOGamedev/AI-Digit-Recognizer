@@ -32,7 +32,6 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="compressed_image" type="TextureRect" parent="CenterContainer" unique_id=808307503]
-visible = false
 z_index = 1
 texture_filter = 1
 layout_mode = 2
@@ -43,5 +42,6 @@ stretch_mode = 5
 
 [node name="overlay" type="Control" parent="CenterContainer" unique_id=1000074024]
 z_index = 2
+clip_contents = true
 layout_mode = 2
 script = ExtResource("2_m0ngg")
