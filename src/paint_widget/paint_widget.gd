@@ -1,8 +1,8 @@
 extends Control
 
-@onready var image_node := $CenterContainer/image
-@onready var compressed_image_node := $CenterContainer/compressed_image
-@onready var overlay := $CenterContainer/overlay
+@onready var image_node := %image
+@onready var compressed_image_node := %compressed_image
+@onready var overlay := %overlay
 
 @export var use_antialiasing := true
 
@@ -226,3 +226,7 @@ func set_compressed_image_visibility(is_visible: bool) -> void:
 func set_grid_visibility(is_visible: float) -> void:
 	grid_visible = is_visible
 	_overlay_dirty = true
+
+
+func get_image_node_size() -> Vector2:
+	return image_node.size

@@ -5,8 +5,8 @@ const BASE_SIZE = 1080
 
 
 func _draw() -> void:
-	draw_brush_overlay()
 	draw_grid_if_needed()
+	draw_brush_overlay()
 
 
 func draw_brush_overlay() -> void:
