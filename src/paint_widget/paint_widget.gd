@@ -6,8 +6,6 @@ extends Control
 
 @export var use_antialiasing := true
 
-@export var BRUSH_SIZE_INCREMENT = 2
-
 var time_since_update = 0.0
 const UPDATE_INTERVAL = 1.0 / 24.0
 var ANTIALISING_WIDTH = 1
@@ -31,7 +29,15 @@ var curr_color_config = DARK_COLOR_CONFIG
 
 var image: Image
 var compressed_image : Image
-@export var brush_size := 80
+
+@export var brush_size_ratio = 2. / MNIST_DATASET_IMAGE_SIZE
+@onready var brush_size = image_node.size.y * brush_size_ratio
+@export var BRUSH_SIZE_RATIO_INCREMENT = 0.02
+
+var min_brush_size_ratio : float
+var MAX_BRUSH_SIZE_RATIO = 0.3
+
+
 var brush_pixels = []
 
 var prev_mouse_pos = null
@@ -43,6 +49,14 @@ var curr_color = Color.WHITE
 func _ready() -> void:
 	init_compressed_image()
 	_rebuild_canvas()
+
+	min_brush_size_ratio = 1 / image_node.size.y
+	brush_size_ratio = 2. / MNIST_DATASET_IMAGE_SIZE
+	brush_size = image_node.size.y * brush_size_ratio
+
+	print(brush_size_ratio)
+	print(image_node.size.y)
+	print(brush_size)
 
 
 func _notification(what: int) -> void:
@@ -71,6 +85,9 @@ func _rebuild_canvas() -> void:
 
 	image_node.texture = ImageTexture.create_from_image(image)
 
+	min_brush_size_ratio = 1 / image_node.size.y
+	brush_size = image_node.size.y * brush_size_ratio
+
 	compute_brush_pixels()
 
 
@@ -95,14 +112,16 @@ func _process(delta: float) -> void:
 		image_node.texture.update(image)
 		update_compressed_image()
 		time_since_update = 0.0
+	
+	print(Engine.get_frames_per_second())
 
 
 func handle_input() -> void:
 	if Input.is_action_just_pressed("mouse_wheel_up"):
-		brush_size = max(1, brush_size + BRUSH_SIZE_INCREMENT)
+		update_brush_size_ratio(BRUSH_SIZE_RATIO_INCREMENT)
 		compute_brush_pixels()
 	elif Input.is_action_just_pressed("mouse_wheel_down"):
-		brush_size = max(1, brush_size - BRUSH_SIZE_INCREMENT)
+		update_brush_size_ratio(-BRUSH_SIZE_RATIO_INCREMENT)
 		compute_brush_pixels()
 
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
@@ -121,6 +140,11 @@ func handle_input() -> void:
 	line(line_pos1, line_pos2, curr_color)
 
 	prev_mouse_pos = mouse_pos
+
+
+func update_brush_size_ratio(increment: float) -> void:
+	brush_size_ratio = max(min_brush_size_ratio / image_node.size.y, brush_size_ratio + increment)
+	brush_size = image_node.size.y * brush_size_ratio
 
 
 func update_compressed_image() -> void:

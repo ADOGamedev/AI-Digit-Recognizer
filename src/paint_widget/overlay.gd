@@ -1,6 +1,8 @@
 extends Control
 
 const MNIST_DATASET_IMAGE_SIZE = 28
+const BASE_SIZE = 1080
+
 
 func _draw() -> void:
 	draw_brush_overlay()
