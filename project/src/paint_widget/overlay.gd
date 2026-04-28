@@ -6,8 +6,10 @@ const BASE_SIZE = 1080
 
 func _draw() -> void:
 	draw_grid_if_needed()
-	draw_brush_overlay()
+	#draw_brush_overlay()
 
+func _process(_delta: float) -> void:
+	queue_redraw()
 
 func draw_brush_overlay() -> void:
 	var mouse_pos = get_local_mouse_position()
@@ -24,9 +26,6 @@ func draw_brush_overlay() -> void:
 
 
 func draw_grid_if_needed() -> void:
-	if !owner.grid_visible:
-		return
-
 	for i in range(1, MNIST_DATASET_IMAGE_SIZE):
 		var pos = i * float(size.x) / MNIST_DATASET_IMAGE_SIZE
 		var vertical_line_from = Vector2(pos, 0)

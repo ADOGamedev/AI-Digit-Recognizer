@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://dn5shfb6ednkk"]
 
 [ext_resource type="Script" uid="uid://cypglvvk42caw" path="res://src/paint_widget/paint_widget.gd" id="1_adckc"]
-[ext_resource type="Script" uid="uid://de2mxe7sa44s2" path="res://src/paint_widget/overlay.gd" id="2_m0ngg"]
-[ext_resource type="Shader" uid="uid://w1xe1ekph8jy" path="res://src/paint_widget/paint_widget.gdshader" id="2_wkb5n"]
+[ext_resource type="Texture2D" uid="uid://by2f7m7ldypbs" path="res://assets/images/grid.png" id="2_m0ngg"]
+[ext_resource type="Shader" uid="uid://w1xe1ekph8jy" path="res://src/paint_widget/rounded_paint_widget.gdshader" id="2_wkb5n"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3h25y"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wkb5n"]
 shader = ExtResource("2_wkb5n")
 shader_parameter/radius = 0.1
 
@@ -20,10 +20,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_adckc")
-grid_visible = true
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=673378025]
-material = SubResource("ShaderMaterial_3h25y")
+material = SubResource("ShaderMaterial_wkb5n")
 clip_contents = true
 layout_mode = 1
 anchors_preset = 15
@@ -32,7 +31,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="image" type="TextureRect" parent="CenterContainer" unique_id=441038753]
+[node name="image" type="TextureRect" parent="CenterContainer" unique_id=1372421683]
 unique_name_in_owner = true
 use_parent_material = true
 layout_mode = 2
@@ -40,9 +39,8 @@ texture = SubResource("ImageTexture_m0ngg")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="compressed_image" type="TextureRect" parent="CenterContainer" unique_id=808307503]
+[node name="compressed_image" type="TextureRect" parent="CenterContainer" unique_id=1174143961]
 unique_name_in_owner = true
-visible = false
 z_index = 1
 texture_filter = 1
 use_parent_material = true
@@ -52,9 +50,17 @@ texture = SubResource("ImageTexture_wkb5n")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="overlay" type="Control" parent="CenterContainer" unique_id=1000074024]
+[node name="grid" type="TextureRect" parent="CenterContainer" unique_id=1497455874]
 unique_name_in_owner = true
 z_index = 2
-clip_contents = true
+use_parent_material = true
 layout_mode = 2
-script = ExtResource("2_m0ngg")
+texture = ExtResource("2_m0ngg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="brush_overlay" type="TextureRect" parent="CenterContainer" unique_id=1406198429]
+unique_name_in_owner = true
+z_index = 3
+use_parent_material = true
+layout_mode = 2

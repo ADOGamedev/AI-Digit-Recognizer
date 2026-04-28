@@ -2,7 +2,8 @@ extends Control
 
 @onready var image_node := %image
 @onready var compressed_image_node := %compressed_image
-@onready var overlay := %overlay
+@onready var grid := %grid
+@onready var brush_overlay := %brush_overlay
 
 @export var use_antialiasing := true
 
@@ -26,20 +27,19 @@ class ColorConfig:
 var DARK_COLOR_CONFIG = ColorConfig.new(Color.BLACK, Color.WHITE, Color.BLACK)
 var curr_color_config = DARK_COLOR_CONFIG
 
-var image: Image
-var compressed_image: Image
+var image : Image
+var compressed_image : Image
+var brush_overlay_image : Image
 
 @export var brush_size_ratio = 2.0 / MNIST_DATASET_IMAGE_SIZE
 @onready var brush_size = image_node.size.y * brush_size_ratio
-@export var BRUSH_SIZE_RATIO_INCREMENT = 0.02
+@export var BRUSH_SIZE_RATIO_INCREMENT = 0.01
 
 var min_brush_size_ratio: float
 var MAX_BRUSH_SIZE_RATIO = 0.3
 
 var prev_mouse_pos = null
 var curr_color = Color.WHITE
-
-@export var grid_visible = false
 
 var _image_dirty := false
 var _overlay_dirty := false
@@ -48,6 +48,7 @@ var _overlay_dirty := false
 func _ready() -> void:
 	init_compressed_image()
 	_rebuild_canvas()
+
 	min_brush_size_ratio = 1.0 / image_node.size.y
 	brush_size_ratio = 2.0 / MNIST_DATASET_IMAGE_SIZE
 	brush_size = image_node.size.y * brush_size_ratio
@@ -60,7 +61,7 @@ func _notification(what: int) -> void:
 
 func _rebuild_canvas() -> void:
 	var canvas_size = int(min(size.x, size.y))
-	if canvas_size <= 0 or !overlay:
+	if canvas_size <= 0 or !image_node:
 		return
 
 	var new_size = Vector2(canvas_size, canvas_size)
@@ -71,8 +72,11 @@ func _rebuild_canvas() -> void:
 	compressed_image_node.custom_minimum_size = new_size
 	compressed_image_node.size = new_size
 
-	overlay.custom_minimum_size = new_size
-	overlay.size = new_size
+	brush_overlay.custom_minimum_size = new_size
+	brush_overlay.size = new_size
+
+	grid.custom_minimum_size = new_size
+	grid.size = new_size
 
 	image = Image.create(canvas_size, canvas_size, true, Image.FORMAT_RGBA8)
 	image.fill(curr_color_config.bg_color)
@@ -81,6 +85,9 @@ func _rebuild_canvas() -> void:
 	if !compressed_image:
 		compressed_image = Image.create(MNIST_DATASET_IMAGE_SIZE, MNIST_DATASET_IMAGE_SIZE, true, Image.FORMAT_RGBA8)
 		compressed_image_node.texture = ImageTexture.create_from_image(compressed_image)
+
+	brush_overlay_image = Image.create(canvas_size, canvas_size, true, Image.FORMAT_RGBA8)
+	brush_overlay.texture = ImageTexture.create_from_image(brush_overlay_image)
 
 	min_brush_size_ratio = 1.0 / image_node.size.y
 	brush_size = image_node.size.y * brush_size_ratio
@@ -104,7 +111,7 @@ func _process(delta: float) -> void:
 	handle_input()
 
 	if _overlay_dirty:
-		overlay.queue_redraw()
+		_update_overlay()
 		_overlay_dirty = false
 
 	time_since_update += delta
@@ -119,6 +126,44 @@ func _process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		_overlay_dirty = true
+
+
+func _update_overlay() -> void:
+	if !brush_overlay_image or !brush_overlay.texture:
+		return
+
+	brush_overlay_image.fill(Color.TRANSPARENT)
+
+	var mouse_pos = image_node.get_local_mouse_position()
+	var radius = brush_size / 2.0
+	var outer = radius + 2.0
+
+	var min_x = clamp(int(mouse_pos.x - outer - 1), 0, brush_overlay_image.get_width())
+	var max_x = clamp(int(mouse_pos.x + outer + 1), 0, brush_overlay_image.get_width())
+	var min_y = clamp(int(mouse_pos.y - outer - 1), 0, brush_overlay_image.get_height())
+	var max_y = clamp(int(mouse_pos.y + outer + 1), 0, brush_overlay_image.get_height())
+
+	for y in range(min_y, max_y + 1):
+		for x in range(min_x, max_x + 1):
+			var dist = Vector2(x, y).distance_to(mouse_pos)
+
+			if dist > outer + 1.0 or pixel_out_of_bounds(Vector2(x, y)):
+				continue
+
+			var pixel_color = Color.TRANSPARENT
+
+			if dist < radius - 1.0:
+				pixel_color = Color(curr_color.r, curr_color.g, curr_color.b, 0.25)
+
+			var white_alpha = clamp(1.0 - abs(dist - radius), 0.0, 1.0)
+			pixel_color = pixel_color.lerp(Color.WHITE, white_alpha)
+
+			var black_alpha = clamp(1.0 - abs(dist - radius - 1.5), 0.0, 1.0)
+			pixel_color = pixel_color.lerp(Color.BLACK, black_alpha)
+
+			brush_overlay_image.set_pixel(x, y, pixel_color)
+
+	brush_overlay.texture.update(brush_overlay_image)
 
 
 func handle_input() -> void:
@@ -224,7 +269,7 @@ func set_compressed_image_visibility(is_visible: bool) -> void:
 	_overlay_dirty = true
 
 func set_grid_visibility(is_visible: float) -> void:
-	grid_visible = is_visible
+	grid.visible = is_visible
 	_overlay_dirty = true
 
 

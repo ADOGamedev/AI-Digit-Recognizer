@@ -3,30 +3,36 @@
 [ext_resource type="Theme" uid="uid://dyxf16u0ladmf" path="res://assets/themes/main_theme.tres" id="1_2c4fo"]
 [ext_resource type="Script" uid="uid://fai1uef5033d" path="res://src/paint_widget_controller/paint_widget_controller.gd" id="1_i4oy7"]
 [ext_resource type="PackedScene" uid="uid://dn5shfb6ednkk" path="res://scenes/paint_widget.tscn" id="1_jwtmf"]
-[ext_resource type="Shader" uid="uid://ci4s43vuqdad" path="res://src/paint_widget_controller/paint_widget_controller.tres" id="3_v3ijk"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5j2ha"]
-shader = ExtResource("3_v3ijk")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i4oy7"]
 bg_color = Color(0.87, 0.87, 0.87, 0.078431375)
-border_width_left = 15
-border_width_top = 15
-border_width_right = 15
-border_width_bottom = 15
-corner_radius_top_left = 70
-corner_radius_top_right = 70
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9098039, 0.9098039, 0.9098039, 0.35686275)
+corner_radius_top_left = 72
+corner_radius_top_right = 72
 corner_radius_bottom_right = 70
-corner_radius_bottom_left = 70
+corner_radius_bottom_left = 72
 corner_detail = 16
-shadow_color = Color(0.8, 0.8, 0.8, 0.49803922)
-shadow_size = 50
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+shadow_color = Color(0.56, 0.56, 0.56, 0.6)
+shadow_size = 15
 
 [node name="PaintWidgetController" type="Control" unique_id=1623632202]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = -421.54498
+offset_top = 68.0
+offset_right = 421.54517
+offset_bottom = -69.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_i4oy7")
@@ -43,10 +49,13 @@ theme = ExtResource("1_2c4fo")
 [node name="paint_widget_margin" type="MarginContainer" parent="paint_widge_outer_panel" unique_id=718622781]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 151
 
 [node name="paint_widget_inner_panel" type="PanelContainer" parent="paint_widge_outer_panel/paint_widget_margin" unique_id=2029945681]
 z_index = 4
-material = SubResource("ShaderMaterial_5j2ha")
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_i4oy7")
 

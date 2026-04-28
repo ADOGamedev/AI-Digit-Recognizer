@@ -13,8 +13,8 @@ corner_radius_top_right = 120
 corner_radius_bottom_right = 120
 corner_radius_bottom_left = 120
 corner_detail = 16
-shadow_color = Color(1, 1, 1, 0.11764706)
-shadow_size = 251
+shadow_color = Color(1, 1, 1, 0.08235294)
+shadow_size = 100
 
 [resource]
 Panel/styles/panel = SubResource("StyleBoxFlat_6ioqn")
