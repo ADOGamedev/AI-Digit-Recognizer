@@ -7,7 +7,7 @@ env = SConscript("godot-cpp/SConstruct") # type: ignore
 env.Append(CPPPATH=["src/", "src/thirdparty/eigen-5.0.0/"])
 
 sources = Glob("src/*.cpp") # type: ignore
-sources = Glob("src/**/*.cpp") # type: ignore
+sources += Glob("src/**/*.cpp") # type: ignore
 
 lib_filename = "{}ai_digit_recognizer{}{}".format(env.subst('$SHLIBPREFIX'), env["suffix"], env.subst('$SHLIBSUFFIX'))
 
