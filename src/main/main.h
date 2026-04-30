@@ -18,6 +18,9 @@ class GodotLogger : public Logger::Logger {
     void log(const char message) override {
         godot::UtilityFunctions::print(godot::String::chr(message));
     }
+    void logerr(const std::string& message) override {
+        godot::UtilityFunctions::printerr(message.c_str());
+    }
 };
 namespace godot {
 

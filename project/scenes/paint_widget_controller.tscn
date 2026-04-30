@@ -3,6 +3,19 @@
 [ext_resource type="Theme" uid="uid://dyxf16u0ladmf" path="res://assets/themes/main_theme.tres" id="1_2c4fo"]
 [ext_resource type="Script" uid="uid://fai1uef5033d" path="res://src/paint_widget_controller/paint_widget_controller.gd" id="1_i4oy7"]
 [ext_resource type="PackedScene" uid="uid://dn5shfb6ednkk" path="res://scenes/paint_widget.tscn" id="1_jwtmf"]
+[ext_resource type="Shader" uid="uid://b3so0wdw3l5b6" path="res://src/paint_widget_controller/liquid_glass.gdshader" id="2_4gis4"]
+[ext_resource type="Texture2D" uid="uid://bqjg3v47pavqp" path="res://assets/images/grid_icon.png" id="4_v3ijk"]
+[ext_resource type="PackedScene" uid="uid://d1nb5ir4s8l4i" path="res://scenes/controller_button.tscn" id="5_4gis4"]
+[ext_resource type="Texture2D" uid="uid://b1eewl6uhuf24" path="res://assets/images/reload_icon.png" id="5_5j2ha"]
+[ext_resource type="Texture2D" uid="uid://balktfhkt36rv" path="res://assets/images/pixelate_icon.png" id="6_nxkeu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m80be"]
+shader = ExtResource("2_4gis4")
+shader_parameter/u_roundness = 0.30400001444
+shader_parameter/u_distortion_intensity = 63.42
+shader_parameter/u_blur_intensity = 2.155
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4gis4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i4oy7"]
 bg_color = Color(0.87, 0.87, 0.87, 0.078431375)
@@ -20,7 +33,7 @@ expand_margin_left = 1.0
 expand_margin_top = 1.0
 expand_margin_right = 1.0
 expand_margin_bottom = 1.0
-shadow_color = Color(0.56, 0.56, 0.56, 0.5254902)
+shadow_color = Color(0.55, 0.55, 0.55, 0.2509804)
 shadow_size = 13
 
 [node name="PaintWidgetController" type="Control" unique_id=1623632202]
@@ -37,6 +50,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_i4oy7")
 
+[node name="liquid_glass" type="Panel" parent="." unique_id=2114601407]
+material = SubResource("ShaderMaterial_m80be")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_4gis4")
+
 [node name="paint_widge_outer_panel" type="PanelContainer" parent="." unique_id=1317996040]
 layout_mode = 1
 anchors_preset = 15
@@ -52,13 +75,47 @@ layout_mode = 2
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 151
+theme_override_constants/margin_bottom = 50
 
-[node name="paint_widget_inner_panel" type="PanelContainer" parent="paint_widge_outer_panel/paint_widget_margin" unique_id=2029945681]
+[node name="VBoxContainer" type="VBoxContainer" parent="paint_widge_outer_panel/paint_widget_margin" unique_id=1560756821]
+layout_mode = 2
+
+[node name="paint_widget_inner_panel" type="PanelContainer" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer" unique_id=2029945681]
 z_index = 4
 layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 7.5
 theme_override_styles/panel = SubResource("StyleBoxFlat_i4oy7")
 
-[node name="PaintWidget" parent="paint_widge_outer_panel/paint_widget_margin/paint_widget_inner_panel" unique_id=289868789 instance=ExtResource("1_jwtmf")]
+[node name="PaintWidget" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/paint_widget_inner_panel" unique_id=289868789 instance=ExtResource("1_jwtmf")]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="controllers_margin" type="MarginContainer" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer" unique_id=1841268082]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 175
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 175
+theme_override_constants/margin_bottom = -12
+
+[node name="controls_hbox_controller" type="HBoxContainer" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin" unique_id=456490529]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 73
+
+[node name="grid_button" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller" unique_id=621284771 instance=ExtResource("5_4gis4")]
+layout_mode = 2
+size_flags_horizontal = 3
+icon_texture = ExtResource("4_v3ijk")
+
+[node name="reload_button" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller" unique_id=648616860 instance=ExtResource("5_4gis4")]
+layout_mode = 2
+size_flags_horizontal = 3
+icon_texture = ExtResource("5_5j2ha")
+
+[node name="pixelate_button" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller" unique_id=1645201481 instance=ExtResource("5_4gis4")]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+icon_texture = ExtResource("6_nxkeu")

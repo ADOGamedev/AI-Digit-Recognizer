@@ -41,6 +41,7 @@ stretch_mode = 5
 
 [node name="compressed_image" type="TextureRect" parent="CenterContainer" unique_id=1174143961]
 unique_name_in_owner = true
+visible = false
 z_index = 1
 texture_filter = 1
 use_parent_material = true
@@ -52,6 +53,7 @@ stretch_mode = 5
 
 [node name="grid" type="TextureRect" parent="CenterContainer" unique_id=1497455874]
 unique_name_in_owner = true
+visible = false
 z_index = 2
 use_parent_material = true
 layout_mode = 2

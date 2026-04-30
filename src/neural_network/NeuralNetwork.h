@@ -1,8 +1,10 @@
 #pragma once
 
 #include <array>
+#include <fstream>
 
 #include <Eigen/Dense>
+#include <json.hpp>
 
 #include "../logger/Logger.h"
 
@@ -14,7 +16,7 @@ struct Layer {
         neurons_count(n),
         values(VectorXd::Zero(n)),
         biases(VectorXd::Zero(n)) {}
-    
+
     int neurons_count;
     VectorXd values;
     VectorXd biases;
@@ -32,19 +34,19 @@ struct WeightMatrix {
 class NeuralNetwork {
 
 public:
+    NeuralNetwork() = default;
+    
     template <size_t N, size_t W>
-    NeuralNetwork(std::array<Layer, N>& layers, std::array<WeightMatrix, W>& weights) {
-        const int hidden_layers_count = N - 2;
+    NeuralNetwork(std::array<Layer, N>& layers_arr, std::array<WeightMatrix, W>& weights) {
         const int weight_matrices_count = std::min(W, N - 1);
 
-        hidden_layers.resize(hidden_layers_count);
+        layers.resize(N);
         weight_matrices.resize(weight_matrices_count);
 
-        input_layer = layers[0];
-        output_layer = layers[N - 1];
+        layers_count = N;
 
-        for (int i = 1; i < hidden_layers_count; i++) {
-            hidden_layers[i - 1] = layers[i];
+        for (int i = 0; i < N; i++) {
+            layers[i] = layers_arr[i];
         }
 
         for (int i = 0; i < weight_matrices_count; i++) {
@@ -52,11 +54,22 @@ public:
         }
     }
 
+    void load_from_json(const std::string& path);
+    void compute_output();
+    
+    void set_input_layer(const VectorXd& values);
+    Layer get_output_layer();
+
+    Layer get_layer(int index);
+    WeightMatrix get_weight_matrix(int index);
+    
+
 private:
-    Layer input_layer;
-    std::vector<Layer> hidden_layers;
-    Layer output_layer;
+    VectorXd fast_sigmoid(const VectorXd& v);
 
+    int layers_count;
+    std::vector<Layer> layers;
+    
     std::vector<WeightMatrix> weight_matrices;
-
+    
 };

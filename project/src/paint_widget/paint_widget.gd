@@ -259,19 +259,14 @@ func pixel_out_of_bounds(pos: Vector2) -> bool:
 
 
 func clear() -> void:
-	image.fill(curr_color_config.bg_color)
-	image_node.texture.update(image)
-	_image_dirty = false
+	_rebuild_canvas()
 
 
-func set_compressed_image_visibility(is_visible: bool) -> void:
-	compressed_image_node.visible = is_visible
-	_overlay_dirty = true
+func toggle_compressed_image_visibility() -> void:
+	compressed_image_node.visible = !compressed_image_node.visible
 
-func set_grid_visibility(is_visible: float) -> void:
-	grid.visible = is_visible
-	_overlay_dirty = true
-
+func toggle_grid_visibility() -> void:
+	grid.visible = !grid.visible
 
 func get_image_node_size() -> Vector2:
 	return image_node.size

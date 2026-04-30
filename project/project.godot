@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="AI Digit Recognizer"
+run/main_scene="uid://gsoudpyi8pxh"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="uid://t5txr3nawub3"
 
@@ -19,7 +20,7 @@ config/icon="uid://t5txr3nawub3"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
-window/vsync/vsync_mode=2
+window/vsync/vsync_mode=0
 
 [input]
 

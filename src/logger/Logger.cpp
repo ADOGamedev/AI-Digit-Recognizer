@@ -20,4 +20,10 @@ void log(const char ch) {
     }
 }
 
+void logerr(const std::string& message) {
+    if (active_logger) {
+        active_logger->logerr(message);
+    }
+}
+
 }

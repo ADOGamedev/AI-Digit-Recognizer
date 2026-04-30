@@ -4,7 +4,7 @@ import sys
 
 env = SConscript("godot-cpp/SConstruct") # type: ignore
 
-env.Append(CPPPATH=["src/", "src/thirdparty/eigen-5.0.0/"])
+env.Append(CPPPATH=["src/", "src/thirdparty/eigen-5.0.0/", "src/thirdparty/nlohmann/"])
 
 sources = Glob("src/*.cpp") # type: ignore
 sources += Glob("src/**/*.cpp") # type: ignore

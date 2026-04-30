@@ -1,12 +1,61 @@
 [gd_resource type="Theme" format=3 uid="uid://dyxf16u0ladmf"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lxams"]
+bg_color = Color(0.91, 0.91, 0.91, 0.16078432)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(1, 1, 1, 0.36078432)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+shadow_color = Color(0.9, 0.9, 0.9, 0.19215687)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3f3va"]
+bg_color = Color(0.83, 0.83, 0.83, 0.16078432)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.8, 0.8, 0.8, 0.23529412)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0, 0, 0, 0.1882353)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vhku8"]
+bg_color = Color(0.87, 0.87, 0.87, 0.32941177)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.22, 0.22, 0.22, 0.6392157)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0, 0, 0, 0.1882353)
+shadow_size = 10
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ioqn"]
-bg_color = Color(0.87, 0.87, 0.87, 0.078431375)
+bg_color = Color(0.41, 0.41, 0.41, 0.019607844)
 border_width_left = 15
 border_width_top = 15
 border_width_right = 15
 border_width_bottom = 15
-border_color = Color(0.91, 0.91, 0.91, 0.35686275)
+border_color = Color(0.91, 0.91, 0.91, 0.21960784)
 border_blend = true
 corner_radius_top_left = 120
 corner_radius_top_right = 120
@@ -17,5 +66,8 @@ shadow_color = Color(1, 1, 1, 0.08235294)
 shadow_size = 100
 
 [resource]
+Button/styles/hover = SubResource("StyleBoxFlat_lxams")
+Button/styles/normal = SubResource("StyleBoxFlat_3f3va")
+Button/styles/pressed = SubResource("StyleBoxFlat_vhku8")
 Panel/styles/panel = SubResource("StyleBoxFlat_6ioqn")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_6ioqn")

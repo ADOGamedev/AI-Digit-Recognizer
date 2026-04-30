@@ -9,27 +9,17 @@ void Main::_ready() {
     godot_logger = GodotLogger();
     Logger::set_logger(&godot_logger);
 
-    std::array<Layer, 3> layers = {
-        Layer(3), Layer(2), Layer(3)
-    };
+    NeuralNetwork neural_net;
+    neural_net.load_from_json("D:\\My Projects\\AI Digit Recognizer\\src\\neural_network\\neural_network.json");
+    
+    VectorXd inputs(3);
+    inputs << 0.1, 0.2, 0.3;
+    
+    neural_net.set_input_layer(inputs);
 
-    std::array<WeightMatrix, 2> weights = {
-        WeightMatrix(2, 3), WeightMatrix(3, 2)
-    };
+    neural_net.compute_output();
 
-    NeuralNetwork neural_net(layers, weights);
-
-
-}
-
-void main() {
-    std::array<Layer, 3> layers = {
-        Layer(3), Layer(2), Layer(3)
-    };
-
-    std::array<WeightMatrix, 2> weights = {
-        WeightMatrix(2, 3), WeightMatrix(3, 2)
-    };
-
-    NeuralNetwork neural_net(layers, weights);
+    std::ostringstream oss2;
+    oss2 << neural_net.get_output_layer().values << "\n--------------------\n";
+    Logger::log(oss2.str());
 }
