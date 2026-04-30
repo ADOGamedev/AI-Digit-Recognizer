@@ -1,8 +1,8 @@
 extends Button
 
 @export var icon_texture : Texture2D
-@export var expand_margins = 5
-@export var tween_duration = 0.05
+@export var expand_margins := 5
+@export var tween_duration := 0.05
 
 @onready var icon_node = $icon_margin/icon
 @onready var style_box_hover = get_theme_stylebox("hover")
@@ -12,20 +12,9 @@ extends Button
 func _ready() -> void:
 	icon_node.texture = icon_texture
 
-	style_box_hover.expand_margin_left = 0
-	style_box_hover.expand_margin_right = 0
-	style_box_hover.expand_margin_bottom = 0
-	style_box_hover.expand_margin_top = 0
-
-	style_box_normal.expand_margin_left = 0
-	style_box_normal.expand_margin_right = 0
-	style_box_normal.expand_margin_bottom = 0
-	style_box_normal.expand_margin_top = 0
-
-	style_box_pressed.expand_margin_left = 0
-	style_box_pressed.expand_margin_right = 0
-	style_box_pressed.expand_margin_bottom = 0
-	style_box_pressed.expand_margin_top = 0
+	set_expand_margins(style_box_normal, 0)
+	set_expand_margins(style_box_hover, 0)
+	set_expand_margins(style_box_pressed, 0)
 
 
 func _on_mouse_entered() -> void:
@@ -35,15 +24,8 @@ func _on_mouse_entered() -> void:
 	tween.tween_property(style_box_hover, "expand_margin_bottom", expand_margins, tween_duration)
 	tween.tween_property(style_box_hover, "expand_margin_top", expand_margins, tween_duration)
 
-	style_box_normal.expand_margin_left = expand_margins
-	style_box_normal.expand_margin_right = expand_margins
-	style_box_normal.expand_margin_bottom = expand_margins
-	style_box_normal.expand_margin_top = expand_margins
-
-	style_box_pressed.expand_margin_left = expand_margins
-	style_box_pressed.expand_margin_right = expand_margins
-	style_box_pressed.expand_margin_bottom = expand_margins
-	style_box_pressed.expand_margin_top = expand_margins
+	set_expand_margins(style_box_normal, expand_margins)
+	set_expand_margins(style_box_pressed, expand_margins)
 
 
 func _on_mouse_exited() -> void:
@@ -53,15 +35,9 @@ func _on_mouse_exited() -> void:
 	tween.tween_property(style_box_normal, "expand_margin_bottom", 0, tween_duration)
 	tween.tween_property(style_box_normal, "expand_margin_top", 0, tween_duration)
 
-	style_box_hover.expand_margin_left = 0
-	style_box_hover.expand_margin_right = 0
-	style_box_hover.expand_margin_bottom = 0
-	style_box_hover.expand_margin_top = 0
+	set_expand_margins(style_box_hover, 0)
+	set_expand_margins(style_box_pressed, 0)
 
-	style_box_pressed.expand_margin_left = 0
-	style_box_pressed.expand_margin_right = 0
-	style_box_pressed.expand_margin_bottom = 0
-	style_box_pressed.expand_margin_top = 0
 
 
 func _on_button_down() -> void:
@@ -71,10 +47,8 @@ func _on_button_down() -> void:
 	tween.tween_property(style_box_pressed, "expand_margin_bottom", 0, tween_duration)
 	tween.tween_property(style_box_pressed, "expand_margin_top", 0, tween_duration)
 
-	style_box_hover.expand_margin_left = 0
-	style_box_hover.expand_margin_right = 0
-	style_box_hover.expand_margin_bottom = 0
-	style_box_hover.expand_margin_top = 0
+	set_expand_margins(style_box_hover, 0)
+
 
 func _on_button_up() -> void:
 	var tween = get_tree().create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN).set_parallel(true)
@@ -83,12 +57,12 @@ func _on_button_up() -> void:
 	tween.tween_property(style_box_hover, "expand_margin_bottom", expand_margins, tween_duration)
 	tween.tween_property(style_box_hover, "expand_margin_top", expand_margins, tween_duration)
 
-	style_box_normal.expand_margin_left = expand_margins
-	style_box_normal.expand_margin_right = expand_margins
-	style_box_normal.expand_margin_bottom = expand_margins
-	style_box_normal.expand_margin_top = expand_margins
+	set_expand_margins(style_box_normal, expand_margins)
+	set_expand_margins(style_box_pressed, expand_margins)
 
-	style_box_pressed.expand_margin_left = expand_margins
-	style_box_pressed.expand_margin_right = expand_margins
-	style_box_pressed.expand_margin_bottom = expand_margins
-	style_box_pressed.expand_margin_top = expand_margins
+
+func set_expand_margins(style_box: StyleBoxFlat, value: int) -> void:
+	style_box.expand_margin_left = value
+	style_box.expand_margin_right = value
+	style_box.expand_margin_bottom = value
+	style_box.expand_margin_top = value

@@ -12,8 +12,8 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m80be"]
 shader = ExtResource("2_4gis4")
 shader_parameter/u_roundness = 0.30400001444
-shader_parameter/u_distortion_intensity = 63.42
-shader_parameter/u_blur_intensity = 2.155
+shader_parameter/u_distortion_intensity = 10.0
+shader_parameter/u_blur_intensity = 10.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4gis4"]
 
@@ -35,6 +35,105 @@ expand_margin_right = 1.0
 expand_margin_bottom = 1.0
 shadow_color = Color(0.55, 0.55, 0.55, 0.2509804)
 shadow_size = 13
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4gis4"]
+resource_local_to_scene = true
+bg_color = Color(0.83, 0.83, 0.83, 0.16078432)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.8, 0.8, 0.8, 0.23529412)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0, 0, 0, 0.1882353)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m80be"]
+resource_local_to_scene = true
+bg_color = Color(0.91, 0.91, 0.91, 0.16078432)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(1, 1, 1, 0.36078432)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_bottom = 5.0
+shadow_color = Color(0.9, 0.9, 0.9, 0.19215687)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yymif"]
+resource_local_to_scene = true
+bg_color = Color(0.83, 0.83, 0.83, 0.16078432)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.8, 0.8, 0.8, 0.23529412)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0, 0, 0, 0.1882353)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7eg3b"]
+resource_local_to_scene = true
+bg_color = Color(0.91, 0.91, 0.91, 0.16078432)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(1, 1, 1, 0.36078432)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_bottom = 5.0
+shadow_color = Color(0.9, 0.9, 0.9, 0.19215687)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4m4uc"]
+resource_local_to_scene = true
+bg_color = Color(0.83, 0.83, 0.83, 0.16078432)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.8, 0.8, 0.8, 0.23529412)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0, 0, 0, 0.1882353)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tmqjl"]
+resource_local_to_scene = true
+bg_color = Color(0.91, 0.91, 0.91, 0.16078432)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(1, 1, 1, 0.36078432)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_bottom = 5.0
+shadow_color = Color(0.9, 0.9, 0.9, 0.19215687)
+shadow_size = 20
 
 [node name="PaintWidgetController" type="Control" unique_id=1623632202]
 layout_mode = 3
@@ -107,15 +206,21 @@ theme_override_constants/separation = 73
 [node name="grid_button" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller" unique_id=621284771 instance=ExtResource("5_4gis4")]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_4gis4")
+theme_override_styles/hover = SubResource("StyleBoxFlat_m80be")
 icon_texture = ExtResource("4_v3ijk")
 
 [node name="reload_button" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller" unique_id=648616860 instance=ExtResource("5_4gis4")]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_yymif")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7eg3b")
 icon_texture = ExtResource("5_5j2ha")
 
 [node name="pixelate_button" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller" unique_id=1645201481 instance=ExtResource("5_4gis4")]
 texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_4m4uc")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tmqjl")
 icon_texture = ExtResource("6_nxkeu")
