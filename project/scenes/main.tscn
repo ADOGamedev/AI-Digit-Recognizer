@@ -5,9 +5,9 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sugp2"]
 shader = ExtResource("1_0wfyh")
-shader_parameter/color1 = Color(0.038, 0.111466624, 0.19, 0.46666667)
+shader_parameter/color1 = Color(0.024200004, 0.11883663, 0.22, 0.46666667)
 shader_parameter/color2 = Color(0, 0, 0, 1)
-shader_parameter/color3 = Color(0.017600002, 0.024719963, 0.16, 1)
+shader_parameter/color3 = Color(0.026400004, 0.037079945, 0.24, 1)
 shader_parameter/speed = 0.055
 shader_parameter/intensity = 0.045
 shader_parameter/scale = 0.62

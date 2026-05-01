@@ -224,3 +224,7 @@ size_flags_horizontal = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_4m4uc")
 theme_override_styles/hover = SubResource("StyleBoxFlat_tmqjl")
 icon_texture = ExtResource("6_nxkeu")
+
+[connection signal="pressed" from="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller/grid_button" to="." method="_on_grid_button_pressed"]
+[connection signal="pressed" from="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller/reload_button" to="." method="_on_reload_button_pressed"]
+[connection signal="pressed" from="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller/pixelate_button" to="." method="_on_pixelate_button_pressed"]
