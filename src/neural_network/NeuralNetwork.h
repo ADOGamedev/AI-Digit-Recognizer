@@ -6,6 +6,7 @@
 #include <Eigen/Dense>
 #include <json.hpp>
 
+#include "../utils/utils.h"
 #include "../logger/Logger.h"
 
 using Eigen::VectorXd, Eigen::MatrixXd;
@@ -17,6 +18,13 @@ struct Layer {
         values(VectorXd::Zero(n)),
         biases(VectorXd::Zero(n)) {}
 
+    
+    void randomize() {
+        for (int i = 0; i < neurons_count; i++) {
+            biases(i) = randf();
+        }
+    }
+
     int neurons_count;
     VectorXd values;
     VectorXd biases;
@@ -25,8 +33,18 @@ struct Layer {
 struct WeightMatrix {
     WeightMatrix() : matrix(MatrixXd::Zero(0, 0)) {}
     WeightMatrix(int outputs, int inputs) :
-        matrix(MatrixXd::Zero(outputs, inputs)) {}
+        outputs(outputs), inputs(inputs), matrix(MatrixXd::Zero(outputs, inputs)) {}
 
+    void randomize() {
+        for (int i = 0; i < inputs; i++) {
+            for (int j = 0; j < outputs; j++) {
+                matrix(j, i) = randf();
+            }
+        }
+    }
+
+    int outputs;
+    int inputs;
     MatrixXd matrix;
 };
 
@@ -35,6 +53,26 @@ class NeuralNetwork {
 
 public:
     NeuralNetwork() = default;
+
+    template <size_t N>
+    NeuralNetwork(std::array<int, N> neurons_per_layer) {
+        layers_count = N;
+
+        layers.resize(N);
+        weight_matrices.resize(N - 1);
+
+        layers[0] = Layer(neurons_per_layer[0]);
+
+        for (int i = 1; i < N; i++) {
+            int neurons = neurons_per_layer[i];
+
+            layers[i] = Layer(neurons);;
+            layers[i].randomize();
+
+            weight_matrices[i - 1] = WeightMatrix(neurons, neurons_per_layer[i - 1]);;
+            weight_matrices[i - 1].randomize();
+        }
+    }
     
     template <size_t N, size_t W>
     NeuralNetwork(std::array<Layer, N>& layers_arr, std::array<WeightMatrix, W>& weights) {

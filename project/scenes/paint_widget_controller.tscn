@@ -11,32 +11,59 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m80be"]
 shader = ExtResource("2_4gis4")
-shader_parameter/u_roundness = 0.30400001444
-shader_parameter/u_distortion_intensity = 10.0
-shader_parameter/u_blur_intensity = 10.0
+shader_parameter/blur = 3.7350001774125
+shader_parameter/warp_intensity = 1.342000063745
+shader_parameter/strength_x = 100.0
+shader_parameter/strength_y = 100.0
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/corner_radius = 0.3
+shader_parameter/edge_smoothness = 3.0
+shader_parameter/tint = Color(0.95, 0.96999997, 1, 0.007843138)
+shader_parameter/edge_highlight = Color(1, 1, 1, 0.3019608)
+shader_parameter/edge_width = 2.36400011229
+shader_parameter/chromatic_strength = 5.0
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4gis4"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tmqjl"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.41, 0.41, 0.41, 0)
+border_width_left = 15
+border_width_top = 15
+border_width_right = 15
+border_width_bottom = 15
+border_color = Color(0.91, 0.91, 0.91, 0.03529412)
+border_blend = true
+corner_radius_top_left = 120
+corner_radius_top_right = 120
+corner_radius_bottom_right = 120
+corner_radius_bottom_left = 120
+corner_detail = 16
+shadow_color = Color(1, 1, 1, 0.050980393)
+shadow_size = 100
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i4oy7"]
 bg_color = Color(0.87, 0.87, 0.87, 0.078431375)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.9098039, 0.9098039, 0.9098039, 0.35686275)
-corner_radius_top_left = 72
-corner_radius_top_right = 72
-corner_radius_bottom_right = 70
-corner_radius_bottom_left = 72
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.039215688)
+corner_radius_top_left = 73
+corner_radius_top_right = 73
+corner_radius_bottom_right = 73
+corner_radius_bottom_left = 73
 corner_detail = 16
 expand_margin_left = 1.0
 expand_margin_top = 1.0
 expand_margin_right = 1.0
 expand_margin_bottom = 1.0
-shadow_color = Color(0.55, 0.55, 0.55, 0.2509804)
-shadow_size = 13
+shadow_color = Color(1, 1, 1, 0.02745098)
+shadow_size = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4gis4"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rwgg4"]
 resource_local_to_scene = true
 bg_color = Color(0.83, 0.83, 0.83, 0.16078432)
 border_width_left = 8
@@ -50,43 +77,43 @@ corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 shadow_color = Color(0, 0, 0, 0.1882353)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4gis4"]
+resource_local_to_scene = true
+bg_color = Color(0.91, 0.91, 0.91, 0.16078432)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(1, 1, 1, 0.36078432)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_bottom = 5.0
+shadow_color = Color(0.9, 0.9, 0.9, 0.19215687)
 shadow_size = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m80be"]
 resource_local_to_scene = true
-bg_color = Color(0.91, 0.91, 0.91, 0.16078432)
+bg_color = Color(0.83, 0.83, 0.83, 0.16078432)
 border_width_left = 8
 border_width_top = 8
 border_width_right = 8
 border_width_bottom = 8
-border_color = Color(1, 1, 1, 0.36078432)
+border_color = Color(0.8, 0.8, 0.8, 0.23529412)
 border_blend = true
 corner_radius_top_left = 15
 corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
-expand_margin_bottom = 5.0
-shadow_color = Color(0.9, 0.9, 0.9, 0.19215687)
+shadow_color = Color(0, 0, 0, 0.1882353)
 shadow_size = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yymif"]
 resource_local_to_scene = true
-bg_color = Color(0.83, 0.83, 0.83, 0.16078432)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
-border_color = Color(0.8, 0.8, 0.8, 0.23529412)
-border_blend = true
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
-shadow_color = Color(0, 0, 0, 0.1882353)
-shadow_size = 20
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7eg3b"]
-resource_local_to_scene = true
 bg_color = Color(0.91, 0.91, 0.91, 0.16078432)
 border_width_left = 8
 border_width_top = 8
@@ -102,7 +129,7 @@ expand_margin_bottom = 5.0
 shadow_color = Color(0.9, 0.9, 0.9, 0.19215687)
 shadow_size = 20
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4m4uc"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7eg3b"]
 resource_local_to_scene = true
 bg_color = Color(0.83, 0.83, 0.83, 0.16078432)
 border_width_left = 8
@@ -118,7 +145,7 @@ corner_radius_bottom_left = 15
 shadow_color = Color(0, 0, 0, 0.1882353)
 shadow_size = 20
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tmqjl"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4m4uc"]
 resource_local_to_scene = true
 bg_color = Color(0.91, 0.91, 0.91, 0.16078432)
 border_width_left = 8
@@ -149,7 +176,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_i4oy7")
 
-[node name="liquid_glass" type="Panel" parent="." unique_id=2114601407]
+[node name="liquid_glass" type="ColorRect" parent="." unique_id=377278206]
 material = SubResource("ShaderMaterial_m80be")
 layout_mode = 1
 anchors_preset = 15
@@ -157,7 +184,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_4gis4")
 
 [node name="paint_widge_outer_panel" type="PanelContainer" parent="." unique_id=1317996040]
 layout_mode = 1
@@ -167,14 +193,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_2c4fo")
+theme_override_styles/panel = SubResource("StyleBoxFlat_tmqjl")
 
 [node name="paint_widget_margin" type="MarginContainer" parent="paint_widge_outer_panel" unique_id=718622781]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/margin_left = 50
+theme_override_constants/margin_left = 51
 theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
+theme_override_constants/margin_right = 51
+theme_override_constants/margin_bottom = 48
 
 [node name="VBoxContainer" type="VBoxContainer" parent="paint_widge_outer_panel/paint_widget_margin" unique_id=1560756821]
 layout_mode = 2
@@ -201,28 +228,28 @@ theme_override_constants/margin_bottom = -12
 [node name="controls_hbox_controller" type="HBoxContainer" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin" unique_id=456490529]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 73
+theme_override_constants/separation = 84
 
 [node name="grid_button" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller" unique_id=621284771 instance=ExtResource("5_4gis4")]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_4gis4")
-theme_override_styles/hover = SubResource("StyleBoxFlat_m80be")
+theme_override_styles/normal = SubResource("StyleBoxFlat_rwgg4")
+theme_override_styles/hover = SubResource("StyleBoxFlat_4gis4")
 icon_texture = ExtResource("4_v3ijk")
 
 [node name="reload_button" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller" unique_id=648616860 instance=ExtResource("5_4gis4")]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_yymif")
-theme_override_styles/hover = SubResource("StyleBoxFlat_7eg3b")
+theme_override_styles/normal = SubResource("StyleBoxFlat_m80be")
+theme_override_styles/hover = SubResource("StyleBoxFlat_yymif")
 icon_texture = ExtResource("5_5j2ha")
 
 [node name="pixelate_button" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller" unique_id=1645201481 instance=ExtResource("5_4gis4")]
 texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_4m4uc")
-theme_override_styles/hover = SubResource("StyleBoxFlat_tmqjl")
+theme_override_styles/normal = SubResource("StyleBoxFlat_7eg3b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_4m4uc")
 icon_texture = ExtResource("6_nxkeu")
 
 [connection signal="pressed" from="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller/grid_button" to="." method="_on_grid_button_pressed"]

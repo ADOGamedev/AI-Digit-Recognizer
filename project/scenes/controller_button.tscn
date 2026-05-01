@@ -6,58 +6,41 @@
 [ext_resource type="Texture2D" uid="uid://balktfhkt36rv" path="res://assets/images/pixelate_icon.png" id="4_lyufm"]
 [ext_resource type="Shader" uid="uid://b3so0wdw3l5b6" path="res://src/paint_widget_controller/liquid_glass.gdshader" id="5_lv7pb"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vel1w"]
-resource_local_to_scene = true
-bg_color = Color(0.83, 0.83, 0.83, 0.16078432)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
-border_color = Color(0.8, 0.8, 0.8, 0.23529412)
-border_blend = true
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
-shadow_color = Color(0, 0, 0, 0.1882353)
-shadow_size = 20
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_025dd"]
-resource_local_to_scene = true
-bg_color = Color(0.91, 0.91, 0.91, 0.16078432)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
-border_color = Color(1, 1, 1, 0.36078432)
-border_blend = true
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
-expand_margin_bottom = 5.0
-shadow_color = Color(0.9, 0.9, 0.9, 0.19215687)
-shadow_size = 20
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vel1w"]
+shader = ExtResource("5_lv7pb")
+shader_parameter/blur = 3.7650001788375
+shader_parameter/warp_intensity = 0.4
+shader_parameter/strength_x = 12.0
+shader_parameter/strength_y = 12.0
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/corner_radius = 0.4190000199025
+shader_parameter/edge_smoothness = 3.0
+shader_parameter/tint = Color(0.95, 0.96999997, 1, 0.16862746)
+shader_parameter/edge_highlight = Color(1, 1, 1, 0.3019608)
+shader_parameter/edge_width = 1.5
+shader_parameter/chromatic_strength = 5.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rt2vb"]
 shader = ExtResource("3_rp6ey")
 shader_parameter/radius = 0.1
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7iy4m"]
-shader = ExtResource("5_lv7pb")
-shader_parameter/u_roundness = 0.30400001444
-shader_parameter/u_distortion_intensity = 63.42
-shader_parameter/u_blur_intensity = 2.155
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tt2fm"]
-
 [node name="ControllerButton" type="Button" unique_id=621284771]
 offset_right = 73.0
 offset_bottom = 73.0
 theme = ExtResource("1_vel1w")
-theme_override_styles/normal = SubResource("StyleBoxFlat_vel1w")
-theme_override_styles/hover = SubResource("StyleBoxFlat_025dd")
 script = ExtResource("2_mly4n")
+
+[node name="liquid_glass" type="ColorRect" parent="." unique_id=806670765]
+visible = false
+modulate = Color(1, 1, 1, 0.28627452)
+material = SubResource("ShaderMaterial_vel1w")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="icon_margin" type="MarginContainer" parent="." unique_id=1008601362]
 layout_mode = 1
@@ -77,18 +60,6 @@ material = SubResource("ShaderMaterial_rt2vb")
 layout_mode = 2
 texture = ExtResource("4_lyufm")
 expand_mode = 1
-
-[node name="liquid_glass" type="Panel" parent="." unique_id=657783507]
-z_index = -1
-material = SubResource("ShaderMaterial_7iy4m")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_tt2fm")
 
 [connection signal="button_down" from="." to="." method="_on_button_down"]
 [connection signal="button_up" from="." to="." method="_on_button_up"]

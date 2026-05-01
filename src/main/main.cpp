@@ -9,17 +9,14 @@ void Main::_ready() {
     godot_logger = GodotLogger();
     Logger::set_logger(&godot_logger);
 
-    NeuralNetwork neural_net;
-    neural_net.load_from_json("D:\\My Projects\\AI Digit Recognizer\\src\\neural_network\\neural_network.json");
-    
-    VectorXd inputs(3);
-    inputs << 0.1, 0.2, 0.3;
-    
-    neural_net.set_input_layer(inputs);
+    std::array<int, 3> neurons_per_layer = {3, 2, 3};
+    NeuralNetwork neural_net(neurons_per_layer);
 
-    neural_net.compute_output();
-
-    std::ostringstream oss2;
-    oss2 << neural_net.get_output_layer().values << "\n--------------------\n";
-    Logger::log(oss2.str());
+    std::ostringstream oss;
+    oss << neural_net.get_layer(0).biases << "\n--------------------\n";
+    oss << neural_net.get_layer(1).biases << "\n--------------------\n";
+    oss << neural_net.get_layer(2).biases << "\n--------------------\n";
+    oss << neural_net.get_weight_matrix(0).matrix << "\n--------------------\n";
+    oss << neural_net.get_weight_matrix(1).matrix << "\n--------------------\n";
+    Logger::log(oss.str());
 }
