@@ -25,6 +25,10 @@ struct Layer {
         }
     }
 
+    std::vector<double> biases_to_list() const {
+        return std::vector<double>(biases.data(), biases.data() + neurons_count);
+    }
+
     int neurons_count;
     VectorXd values;
     VectorXd biases;
@@ -41,6 +45,19 @@ struct WeightMatrix {
                 matrix(j, i) = randf();
             }
         }
+    }
+
+    std::vector<std::vector<double>> to_list() const {
+        std::vector<std::vector<double>> list;
+        list.resize(outputs);
+        for (int i = 0; i < outputs; i++) {
+            list[i].resize(outputs);
+            for (int j = 0; j < inputs; j++) {
+                list[i][j] = matrix(i, j);
+            }
+        }
+
+        return list;
     }
 
     int outputs;
@@ -93,6 +110,7 @@ public:
     }
 
     void load_from_json(const std::string& path);
+    void save_to_json(const std::string& path);
     void compute_output();
     
     void set_input_layer(const VectorXd& values);

@@ -5,11 +5,13 @@
 #include <string>
 
 #include <Eigen/Dense>
+#include "mnist_loader.h"
 
 #include <godot_cpp/classes/node.hpp>
 
 #include "../logger/Logger.h"
 #include "../neural_network/NeuralNetwork.h"
+#include "../trainer/Trainer.h"
 
 class GodotLogger : public Logger::Logger {
     void log(const std::string& message) override {

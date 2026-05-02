@@ -49,16 +49,34 @@ void NeuralNetwork::load_from_json(const std::string& path) {
     }
 }
 
+void NeuralNetwork::save_to_json(const std::string& path) {
+    nlohmann::json data;
+    data["inputs"] = layers[0].neurons_count;
+
+    data["biases"] = {};
+    for (const Layer& layer : layers) {
+        data["biases"].push_back(layer.biases_to_list());
+    }
+
+    data["weights"] = {};
+    for (const WeightMatrix& weights : weight_matrices) {
+        data["weights"].push_back(weights.to_list());
+    }
+
+    std::ofstream file(path);
+    file << data.dump(4);
+    file.close();
+}
 
 void NeuralNetwork::compute_output() {
     for (int i = 0; i < layers_count - 1; i++) {
         auto& z = weight_matrices[i].matrix * layers[i].values + layers[i + 1].biases;
-        layers[i + 1].values = fast_sigmoid(z);
+        layers[i + 1].values = z;
     }
 }
 
 void NeuralNetwork::set_input_layer(const VectorXd& values) {
-    if (layers[0].values.size() != values.size()) {
+    if (layers[0].neurons_count != values.size()) {
         Logger::logerr("ERROR: trying to set inputs with " + std::to_string(values.size()) + " values");
         return;
     }

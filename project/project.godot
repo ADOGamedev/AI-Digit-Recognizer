@@ -13,7 +13,7 @@ config_version=5
 config/name="AI Digit Recognizer"
 run/main_scene="uid://gsoudpyi8pxh"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="uid://t5txr3nawub3"
+config/icon="uid://bbvgfxkox47q2"
 
 [display]
 

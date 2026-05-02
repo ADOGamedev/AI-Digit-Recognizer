@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/src/thirdparty/eigen-5.0.0/",
-                "${workspaceFolder}/src/thirdparty/nlohmann/"
+                "${workspaceFolder}/src/thirdparty/nlohmann/",
+                "${workspaceFolder}/src/thirdparty/mnist-loader/include/"
             ],
             "defines": [
                 "_DEBUG",
