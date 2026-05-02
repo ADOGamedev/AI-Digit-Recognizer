@@ -50,10 +50,10 @@ struct WeightMatrix {
     std::vector<std::vector<double>> to_list() const {
         std::vector<std::vector<double>> list;
         list.resize(outputs);
-        for (int i = 0; i < outputs; i++) {
-            list[i].resize(outputs);
-            for (int j = 0; j < inputs; j++) {
-                list[i][j] = matrix(i, j);
+        for (int j = 0; j < outputs; j++) {
+            list[j].resize(inputs);
+            for (int i = 0; i < inputs; i++) {
+                list[j][i] = matrix(j, i);
             }
         }
 

@@ -11,6 +11,7 @@
 
 #include "../logger/Logger.h"
 #include "../neural_network/NeuralNetwork.h"
+#include "../mnist_dataset/MNISTDataset.h"
 #include "../trainer/Trainer.h"
 
 class GodotLogger : public Logger::Logger {

@@ -53,17 +53,21 @@ void NeuralNetwork::save_to_json(const std::string& path) {
     nlohmann::json data;
     data["inputs"] = layers[0].neurons_count;
 
-    data["biases"] = {};
+    data["biases"] = nlohmann::json::array();;
     for (const Layer& layer : layers) {
         data["biases"].push_back(layer.biases_to_list());
     }
 
-    data["weights"] = {};
+    data["weights"] = nlohmann::json::array();;
     for (const WeightMatrix& weights : weight_matrices) {
         data["weights"].push_back(weights.to_list());
     }
 
     std::ofstream file(path);
+    if (!file.is_open()) {
+        Logger::logerr("ERROR: JSON could not be opened");
+        return;
+    }
     file << data.dump(4);
     file.close();
 }
