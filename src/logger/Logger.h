@@ -8,14 +8,14 @@ class Logger {
 public:
     virtual ~Logger() = default;    
     virtual void log(const std::string& message) {
-        std::cout << message;
+        std::cout << message << "\n";
     }
     virtual void log(const char message) {
-        std::cout << message;
+        std::cout << message << "\n";
     }
 
     virtual void logerr(const std::string& message) {
-        std::cerr << message;
+        std::cerr << message << "\n";
     }
 
 };

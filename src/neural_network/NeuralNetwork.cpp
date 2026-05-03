@@ -53,12 +53,12 @@ void NeuralNetwork::save_to_json(const std::string& path) {
     nlohmann::json data;
     data["inputs"] = layers[0].neurons_count;
 
-    data["biases"] = nlohmann::json::array();;
-    for (const Layer& layer : layers) {
-        data["biases"].push_back(layer.biases_to_list());
+    data["biases"] = nlohmann::json::array();
+    for (int i = 1; i < layers_count; i++) {
+        data["biases"].push_back(layers[i].biases_to_list());
     }
 
-    data["weights"] = nlohmann::json::array();;
+    data["weights"] = nlohmann::json::array();
     for (const WeightMatrix& weights : weight_matrices) {
         data["weights"].push_back(weights.to_list());
     }
@@ -74,8 +74,9 @@ void NeuralNetwork::save_to_json(const std::string& path) {
 
 void NeuralNetwork::compute_output() {
     for (int i = 0; i < layers_count - 1; i++) {
-        auto& z = weight_matrices[i].matrix * layers[i].values + layers[i + 1].biases;
-        layers[i + 1].values = z;
+        VectorXd z = weight_matrices[i].matrix * layers[i].values + layers[i + 1].biases;
+        layers[i + 1].z_values = z;
+        layers[i + 1].values = fast_sigmoid(z);
     }
 }
 
@@ -111,9 +112,24 @@ WeightMatrix NeuralNetwork::get_weight_matrix(int index) {
     }
 }
 
+void NeuralNetwork::change_biases(const int layer_index, const VectorXd& amount) {
+    if (layer_index >= layers.size()) {
+        Logger::log("ERROR: trying to change the bias of an out-out-bounds layer");
+        return;
+    }
+    layers[layer_index].biases += amount;
+}
+
+
+void NeuralNetwork::change_weights(const int weight_index, const MatrixXd& amount) {
+    if (weight_index >= weight_matrices.size()) {
+        Logger::log("ERROR: trying to change the weights of an out-out-bounds weight matrix");
+        return;
+    }
+    weight_matrices[weight_index].matrix += amount;
+}
+
+
 VectorXd NeuralNetwork::fast_sigmoid(const VectorXd& v) {
-    VectorXd result = v;
-    auto a = result.array();
-    result = 0.5 * (a / (1 + a.abs()) + 1);
-    return result;
+    return 0.5 * (v.array() / (1 + v.array().abs()) + 1);
 }

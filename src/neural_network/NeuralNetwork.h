@@ -32,6 +32,7 @@ struct Layer {
     int neurons_count;
     VectorXd values;
     VectorXd biases;
+    VectorXd z_values;
 };
 
 struct WeightMatrix {
@@ -83,10 +84,10 @@ public:
         for (int i = 1; i < N; i++) {
             int neurons = neurons_per_layer[i];
 
-            layers[i] = Layer(neurons);;
+            layers[i] = Layer(neurons);
             layers[i].randomize();
 
-            weight_matrices[i - 1] = WeightMatrix(neurons, neurons_per_layer[i - 1]);;
+            weight_matrices[i - 1] = WeightMatrix(neurons, neurons_per_layer[i - 1]);
             weight_matrices[i - 1].randomize();
         }
     }
@@ -118,12 +119,15 @@ public:
 
     Layer get_layer(int index);
     WeightMatrix get_weight_matrix(int index);
+
+    void change_biases(const int layer_index, const VectorXd& amount);
+    void change_weights(const int weight_index, const MatrixXd& amount);
     
+    VectorXd fast_sigmoid(const VectorXd& v);
+    
+    int layers_count;
 
 private:
-    VectorXd fast_sigmoid(const VectorXd& v);
-
-    int layers_count;
     std::vector<Layer> layers;
     
     std::vector<WeightMatrix> weight_matrices;

@@ -3,14 +3,19 @@
 #include <Eigen/Dense>
 #include "mnist_loader.h"
 
+#include "../logger/Logger.h"
+
 using Eigen::VectorXd;
 
 namespace MNISTDataset {
     constexpr int MNIST_IMAGE_SIZE = 28;
-    constexpr int IMAGES_PER_BATCH = 100;
+    constexpr int IMAGES_PER_BATCH = 10;
     
     inline std::string PATH_TO_TRAINING_LABELS = "D:\\My Projects\\AI Digit Recognizer\\src\\mnist_dataset\\train-labels.idx1-ubyte";
     inline std::string PATH_TO_TRAINING_IMAGES = "D:\\My Projects\\AI Digit Recognizer\\src\\mnist_dataset\\train-images.idx3-ubyte";
+    
+    inline std::string PATH_TO_TESTING_LABELS = "D:\\My Projects\\AI Digit Recognizer\\src\\mnist_dataset\\t10k-labels.idx1-ubyte";
+    inline std::string PATH_TO_TESTING_IMAGES = "D:\\My Projects\\AI Digit Recognizer\\src\\mnist_dataset\\t10k-images.idx3-ubyte";
 }
 
 struct MNISTImageLabel {
@@ -29,12 +34,24 @@ struct MNISTImageLabel {
 namespace MNISTDataset {
 
     inline std::vector<std::vector<MNISTImageLabel>> batches;
+    inline std::vector<MNISTImageLabel> test_examples;
 
-    inline void load_training_data() {
+    inline void load_data() {
         mnist_loader train_dataset( PATH_TO_TRAINING_IMAGES, PATH_TO_TRAINING_LABELS);
+        mnist_loader test_dataset( PATH_TO_TESTING_IMAGES, PATH_TO_TESTING_LABELS);
         
         const int batches_count = train_dataset.size() / IMAGES_PER_BATCH;
         batches.resize(batches_count);
+
+        const int test_examples_count = test_dataset.size();
+        test_examples.resize(test_examples_count);
+
+        for (int i = 0; i < test_examples_count; i++) {
+            std::vector<double> image = test_dataset.images(i);
+            int label = test_dataset.labels(i);
+
+            test_examples[i] = MNISTImageLabel(image, label);
+        }
 
         for (int i = 0; i < batches_count; i++) {
             batches[i].resize(IMAGES_PER_BATCH);

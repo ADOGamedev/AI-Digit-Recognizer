@@ -3,7 +3,10 @@
         {
             "name": "Win32",
             "includePath": [
+                "C:/msys64/ucrt64/include",
+                "C:/msys64/ucrt64/include/c++/15.2.0",
                 "${workspaceFolder}/**",
+                "${workspaceFolder}/src/**",
                 "${workspaceFolder}/src/thirdparty/eigen-5.0.0/",
                 "${workspaceFolder}/src/thirdparty/nlohmann/",
                 "${workspaceFolder}/src/thirdparty/mnist-loader/include/"
@@ -14,10 +17,10 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.26100.0",
-            "compilerPath": "cl.exe",
+            "compilerPath": "c++.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-msvc-x64"
+            "intelliSenseMode": "gcc-x64"
         }
     ],
     "version": 4

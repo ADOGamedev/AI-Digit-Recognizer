@@ -722,7 +722,7 @@ void BDCSVD<MatrixType, Options>::computeSVDofM(Index firstCol, Index n, MatrixX
   Map<ArrayXr> zhat(m_workspace.data() + 3 * n, n);
 
 #ifdef EIGEN_BDCSVD_DEBUG_VERBOSE
-  std::cout << "computeSVDofM using:\n";
+  std::cout << "computeSVDofM usinD:\n";
   std::cout << "  z: " << col0.transpose() << "\n";
   std::cout << "  d: " << diag.transpose() << "\n";
 #endif
