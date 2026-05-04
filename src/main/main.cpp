@@ -9,24 +9,32 @@ void Main::_ready() {
     godot_logger = GodotLogger();
     Logger::set_logger(&godot_logger);
 
+    global = get_tree()->get_root()->get_node<Node>("Global");
+
+    neural_net.load_from_json("D:\\My Projects\\AI Digit Recognizer\\src\\neural_network\\final_trained_network.json");
+
 }
 
+void Main::_process(double delta) {
+    if (!global->get("update_requested")) {
+        return;
+    }
 
-int main() {
-    Logger::Logger logger = Logger::Logger();
-    Logger::set_logger(&logger);
+    VectorXd input(MNISTDataset::MNIST_IMAGE_SIZE * MNISTDataset::MNIST_IMAGE_SIZE);
+    Array input_array = global->get("input_values");
 
-    MNISTDataset::load_data();
+    for (int i = 0; i < input_array.size(); i++) {
+        input(i) = (double)input_array[i];
+    }
 
-    NeuralNetwork neural_net;
-    neural_net.load_from_json("D:\\My Projects\\AI Digit Recognizer\\src\\neural_network\\neural_network.json");
+    neural_net.set_input_layer(input);
+    neural_net.compute_output();
 
-    Trainer trainer(&neural_net, 2.0);
-    trainer.train(1000);
-    trainer.set_learning_rate(0.5);
-    trainer.train(2000);
-    trainer.set_learning_rate(0.1);
-    trainer.train(2000);
+    int guessed_digit;
+    neural_net.get_output_layer().values.maxCoeff(&guessed_digit);
 
-    neural_net.save_to_json("D:\\My Projects\\AI Digit Recognizer\\src\\neural_network\\second_attemp\\trained_network2.json");
+    global->set("guessed_digit", guessed_digit);
+    global->set("update_requested", false);
+
+    Logger::log(std::to_string((int)global->get("guessed_digit")));
 }

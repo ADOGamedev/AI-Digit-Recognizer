@@ -1,6 +1,18 @@
 #include "NeuralNetwork.h"
 
 
+void NeuralNetwork::randomize_weights_xavier() {
+    for (int i = 0; i < weight_matrices.size(); i++) {
+        int n_in = layers[i].neurons_count;
+        int n_out = layers[i + 1].neurons_count;
+
+        double limit = sqrt(6.0 / (n_in + n_out));
+
+        weight_matrices[i].matrix = MatrixXd::Random(n_out, n_in) * limit;
+    }
+}
+
+
 void NeuralNetwork::load_from_json(const std::string& path) {
     std::ifstream json_file(path);
     nlohmann::json data = nlohmann::json::parse(json_file);
@@ -76,7 +88,7 @@ void NeuralNetwork::compute_output() {
     for (int i = 0; i < layers_count - 1; i++) {
         VectorXd z = weight_matrices[i].matrix * layers[i].values + layers[i + 1].biases;
         layers[i + 1].z_values = z;
-        layers[i + 1].values = fast_sigmoid(z);
+        layers[i + 1].values = sigmoid(z);
     }
 }
 
@@ -130,6 +142,6 @@ void NeuralNetwork::change_weights(const int weight_index, const MatrixXd& amoun
 }
 
 
-VectorXd NeuralNetwork::fast_sigmoid(const VectorXd& v) {
-    return 0.5 * (v.array() / (1 + v.array().abs()) + 1);
+VectorXd NeuralNetwork::sigmoid(const VectorXd& v) {
+    return (1.0 / (1.0 + (-v.array()).exp())).matrix();
 }

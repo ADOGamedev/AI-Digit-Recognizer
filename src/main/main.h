@@ -8,6 +8,8 @@
 #include "mnist_loader.h"
 
 #include <godot_cpp/classes/node.hpp>
+#include <godot_cpp/classes/scene_tree.hpp>
+#include <godot_cpp/classes/window.hpp>
 
 #include "../logger/Logger.h"
 #include "../neural_network/NeuralNetwork.h"
@@ -39,10 +41,14 @@ public:
     ~Main() = default;
 
     void _ready() override;
+    void _process(double delta) override;
 
 
 private:
     GodotLogger godot_logger;
+
+    NeuralNetwork neural_net{};
+    Node* global;
 
 };
 

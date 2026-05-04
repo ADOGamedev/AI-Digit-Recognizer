@@ -9,7 +9,7 @@ using Eigen::VectorXd;
 
 namespace MNISTDataset {
     constexpr int MNIST_IMAGE_SIZE = 28;
-    constexpr int IMAGES_PER_BATCH = 10;
+    constexpr int IMAGES_PER_BATCH = 20;
     
     inline std::string PATH_TO_TRAINING_LABELS = "D:\\My Projects\\AI Digit Recognizer\\src\\mnist_dataset\\train-labels.idx1-ubyte";
     inline std::string PATH_TO_TRAINING_IMAGES = "D:\\My Projects\\AI Digit Recognizer\\src\\mnist_dataset\\train-images.idx3-ubyte";

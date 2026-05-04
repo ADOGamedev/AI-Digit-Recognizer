@@ -28,10 +28,10 @@ void Trainer::update_net_for_a_single_batch(std::vector<MNISTImageLabel>& batch)
         /*std::ostringstream oss;
         oss << (-learning_rate / batch.size() * accumulated.biases[i]);
         Logger::log("Changing bias " + std::to_string(i + 1) + " by \n" + oss.str());*/
-        network->change_biases(i + 1, -learning_rate / batch.size() * accumulated.biases[i]);
+        network->change_biases(i + 1, -learning_rate * accumulated.biases[i]);
     }
     for (int i = 0; i < accumulated.weights.size(); i++) {
-        network->change_weights(i, -learning_rate / batch.size() * accumulated.weights[i]);
+        network->change_weights(i, -learning_rate * accumulated.weights[i]);
     }
     
 }
@@ -70,8 +70,8 @@ VectorXd Trainer::cost_derivative(const VectorXd& expected) {
 
 
 VectorXd Trainer::fast_sigmoid_derivative(const VectorXd& vec) {
-    auto& a = vec.array();
-    return 1 / (2 * (1 + a.abs()) * (1 + a.abs()));
+    auto s = network->sigmoid(vec).array();
+    return (s * (1.0 - s)).matrix();
 }
 
 

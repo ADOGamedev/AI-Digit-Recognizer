@@ -12,7 +12,7 @@ const UPDATE_INTERVAL = 1.0 / 24.0
 var ANTIALISING_WIDTH = 1
 
 const MNIST_DATASET_IMAGE_SIZE = 28
-var compressed_image_array : Array
+var centered_image_array : Array
 
 class ColorConfig:
 	func _init(_bg_color, _brush_base_color, _brush_secondary_color) -> void:
@@ -29,6 +29,7 @@ var curr_color_config = DARK_COLOR_CONFIG
 
 var image : Image
 var compressed_image : Image
+var centered_image : Image
 var brush_overlay_image : Image
 
 @export var brush_size_ratio = 2.0 / MNIST_DATASET_IMAGE_SIZE
@@ -46,6 +47,7 @@ var _overlay_dirty := false
 
 
 func _ready() -> void:
+	init_centered_image()
 	init_compressed_image()
 	_rebuild_canvas()
 
@@ -78,15 +80,15 @@ func _rebuild_canvas() -> void:
 	grid.custom_minimum_size = new_size
 	grid.size = new_size
 
-	image = Image.create(canvas_size, canvas_size, true, Image.FORMAT_RGBA8)
+	image = Image.create(canvas_size, canvas_size, false, Image.FORMAT_RGBA8)
 	image.fill(curr_color_config.bg_color)
 	image_node.texture = ImageTexture.create_from_image(image)
 
 	if !compressed_image:
-		compressed_image = Image.create(MNIST_DATASET_IMAGE_SIZE, MNIST_DATASET_IMAGE_SIZE, true, Image.FORMAT_RGBA8)
+		compressed_image = Image.create(MNIST_DATASET_IMAGE_SIZE, MNIST_DATASET_IMAGE_SIZE, false, Image.FORMAT_RGBA8)
 		compressed_image_node.texture = ImageTexture.create_from_image(compressed_image)
 
-	brush_overlay_image = Image.create(canvas_size, canvas_size, true, Image.FORMAT_RGBA8)
+	brush_overlay_image = Image.create(canvas_size, canvas_size, false, Image.FORMAT_RGBA8)
 	brush_overlay.texture = ImageTexture.create_from_image(brush_overlay_image)
 
 	min_brush_size_ratio = 1.0 / image_node.size.y
@@ -95,15 +97,13 @@ func _rebuild_canvas() -> void:
 	_overlay_dirty = true
 
 
+func init_centered_image() -> void:
+	centered_image = Image.create(MNIST_DATASET_IMAGE_SIZE, MNIST_DATASET_IMAGE_SIZE, false, Image.FORMAT_RGBA8)
+	centered_image_array.resize(MNIST_DATASET_IMAGE_SIZE * MNIST_DATASET_IMAGE_SIZE)
+	centered_image_array.fill(0.0)
+
 func init_compressed_image() -> void:
-	compressed_image = Image.create(MNIST_DATASET_IMAGE_SIZE, MNIST_DATASET_IMAGE_SIZE, true, Image.FORMAT_RGBA8)
-	compressed_image_array.resize(MNIST_DATASET_IMAGE_SIZE)
-
-	for i in range(MNIST_DATASET_IMAGE_SIZE):
-		compressed_image_array[i] = []
-		compressed_image_array[i].resize(MNIST_DATASET_IMAGE_SIZE)
-		compressed_image_array[i].fill(0.0)
-
+	compressed_image = Image.create(MNIST_DATASET_IMAGE_SIZE, MNIST_DATASET_IMAGE_SIZE, false, Image.FORMAT_RGBA8)
 	compressed_image_node.texture = ImageTexture.create_from_image(compressed_image)
 
 
@@ -119,7 +119,9 @@ func _process(delta: float) -> void:
 		time_since_update = 0.0
 		if _image_dirty:
 			image_node.texture.update(image)
+			update_centered_image()
 			update_compressed_image()
+			update_global()
 			_image_dirty = false
 
 
@@ -200,15 +202,95 @@ func update_compressed_image() -> void:
 	compressed_image.copy_from(image)
 	compressed_image.resize(MNIST_DATASET_IMAGE_SIZE, MNIST_DATASET_IMAGE_SIZE, Image.INTERPOLATE_LANCZOS)
 	compressed_image_node.texture.update(compressed_image)
-	update_compressed_image_array()
 
 
-func update_compressed_image_array() -> void:
-	var raw: PackedByteArray = compressed_image.get_data()
+func update_centered_image_array() -> void:
+	var raw: PackedByteArray = centered_image.get_data()
 	for y in range(MNIST_DATASET_IMAGE_SIZE):
 		for x in range(MNIST_DATASET_IMAGE_SIZE):
 			var idx = (y * MNIST_DATASET_IMAGE_SIZE + x) * 4
-			compressed_image_array[y][x] = raw[idx] / 255.0
+			centered_image_array[y * MNIST_DATASET_IMAGE_SIZE + x] = raw[idx] / 255.0
+
+
+func update_centered_image() -> void:
+	# TODO: implement image centering MYSELF
+	
+	var min_x = image.get_width()
+	var max_x = 0
+	var min_y = image.get_height()
+	var max_y = 0
+
+	var found = false
+
+	# 1. Encontrar el bounding box exacto
+	for y in range(image.get_height()):
+		for x in range(image.get_width()):
+			if image.get_pixel(x, y).r > 0.1: # Ignorar píxeles casi negros (aliasing fantasma)
+				found = true
+				min_x = min(x, min_x)
+				max_x = max(x, max_x)
+				min_y = min(y, min_y)
+				max_y = max(y, max_y)
+
+	if !found:
+		centered_image.fill(Color.BLACK)
+		update_centered_image_array()
+		return
+
+	var width = max_x - min_x + 1
+	var height = max_y - min_y + 1
+	
+	var rect = Rect2i(min_x, min_y, width, height)
+	var cropped = image.get_region(rect)
+
+	# 2. Escalar para que el lado más largo mida exactamente 20 píxeles (Estándar MNIST)
+	var max_dim = max(width, height)
+	var scale_factor = 20.0 / float(max_dim)
+	
+	var new_width = max(1, int(width * scale_factor))
+	var new_height = max(1, int(height * scale_factor))
+	
+	# INTERPOLATE_BILINEAR es menos agresivo que LANCZOS y evita valores extraños
+	cropped.resize(new_width, new_height, Image.INTERPOLATE_BILINEAR) 
+
+	# 3. Calcular el Centro de Masa (Center of Mass)
+	var sum_x = 0.0
+	var sum_y = 0.0
+	var total_mass = 0.0
+
+	for y in range(new_height):
+		for x in range(new_width):
+			var pixel_val = cropped.get_pixel(x, y).r
+			if pixel_val > 0.0:
+				sum_x += x * pixel_val
+				sum_y += y * pixel_val
+				total_mass += pixel_val
+
+	var com_x = sum_x / total_mass if total_mass > 0 else new_width / 2.0
+	var com_y = sum_y / total_mass if total_mass > 0 else new_height / 2.0
+
+	# 4. Pegar sobre una imagen de 28x28 fijando el Centro de Masa en (14, 14)
+	centered_image.fill(Color.BLACK)
+	
+	var offset_x = int(round(14.0 - com_x))
+	var offset_y = int(round(14.0 - com_y))
+
+	for y in range(new_height):
+		for x in range(new_width):
+			var target_x = x + offset_x
+			var target_y = y + offset_y
+			
+			# Asegurar que no dibujamos fuera de los bordes 28x28
+			if target_x >= 0 and target_x < MNIST_DATASET_IMAGE_SIZE and target_y >= 0 and target_y < MNIST_DATASET_IMAGE_SIZE:
+				var color = cropped.get_pixel(x, y)
+				centered_image.set_pixel(target_x, target_y, color)
+
+	update_centered_image_array()
+
+
+func update_global() -> void:
+	Global.update_requested = true
+	Global.input_values = centered_image_array
 
 
 func draw_capsule(pos1: Vector2, pos2: Vector2, color: Color) -> void:

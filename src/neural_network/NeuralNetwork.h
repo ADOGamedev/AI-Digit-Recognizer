@@ -16,14 +16,8 @@ struct Layer {
     Layer(int n) :
         neurons_count(n),
         values(VectorXd::Zero(n)),
-        biases(VectorXd::Zero(n)) {}
-
-    
-    void randomize() {
-        for (int i = 0; i < neurons_count; i++) {
-            biases(i) = randf();
-        }
-    }
+        biases(VectorXd::Zero(n)),
+        z_values(VectorXd::Zero(n)) {}
 
     std::vector<double> biases_to_list() const {
         return std::vector<double>(biases.data(), biases.data() + neurons_count);
@@ -39,14 +33,6 @@ struct WeightMatrix {
     WeightMatrix() : matrix(MatrixXd::Zero(0, 0)) {}
     WeightMatrix(int outputs, int inputs) :
         outputs(outputs), inputs(inputs), matrix(MatrixXd::Zero(outputs, inputs)) {}
-
-    void randomize() {
-        for (int i = 0; i < inputs; i++) {
-            for (int j = 0; j < outputs; j++) {
-                matrix(j, i) = randf();
-            }
-        }
-    }
 
     std::vector<std::vector<double>> to_list() const {
         std::vector<std::vector<double>> list;
@@ -79,17 +65,15 @@ public:
         layers.resize(N);
         weight_matrices.resize(N - 1);
 
-        layers[0] = Layer(neurons_per_layer[0]);
-
-        for (int i = 1; i < N; i++) {
-            int neurons = neurons_per_layer[i];
-
-            layers[i] = Layer(neurons);
-            layers[i].randomize();
-
-            weight_matrices[i - 1] = WeightMatrix(neurons, neurons_per_layer[i - 1]);
-            weight_matrices[i - 1].randomize();
+        for (int i = 0; i < N; i++) {
+            layers[i] = Layer(neurons_per_layer[i]);
         }
+
+        for (int i = 0; i < N - 1; i++) {
+            weight_matrices[i] = WeightMatrix(neurons_per_layer[i + 1], neurons_per_layer[i]);
+        }
+
+        randomize_weights_xavier();
     }
     
     template <size_t N, size_t W>
@@ -110,6 +94,8 @@ public:
         }
     }
 
+    void randomize_weights_xavier();
+
     void load_from_json(const std::string& path);
     void save_to_json(const std::string& path);
     void compute_output();
@@ -123,7 +109,7 @@ public:
     void change_biases(const int layer_index, const VectorXd& amount);
     void change_weights(const int weight_index, const MatrixXd& amount);
     
-    VectorXd fast_sigmoid(const VectorXd& v);
+    VectorXd sigmoid(const VectorXd& v);
     
     int layers_count;
 
