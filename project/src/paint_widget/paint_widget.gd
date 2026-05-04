@@ -7,8 +7,12 @@ extends Control
 
 @export var use_antialiasing := true
 
+const UPDATE_INTERVAL = 1.0 / 20.0
 var time_since_update = 0.0
-const UPDATE_INTERVAL = 1.0 / 24.0
+
+const GLOBAL_UPDATE_INTERVAL = 1.0 / 1.8
+const MAX_GLOBAL_UPDATE_INTERVAL = 1.2
+var time_since_global_update = 0.0
 var ANTIALISING_WIDTH = 1
 
 const MNIST_DATASET_IMAGE_SIZE = 28
@@ -45,7 +49,7 @@ var curr_color = Color.WHITE
 
 var _image_dirty := false
 var _overlay_dirty := false
-
+var _centered_image_dirty := false
 
 func _ready() -> void:
 	init_centered_image()
@@ -116,6 +120,7 @@ func _process(delta: float) -> void:
 		_overlay_dirty = false
 
 	time_since_update += delta
+	time_since_global_update += delta
 	if time_since_update >= UPDATE_INTERVAL:
 		time_since_update = 0.0
 		if _image_dirty:
@@ -124,9 +129,17 @@ func _process(delta: float) -> void:
 			else:
 				image_node.texture.update(image)
 
+			_image_dirty = false
+
+
+	if time_since_global_update > GLOBAL_UPDATE_INTERVAL:
+		if _centered_image_dirty or time_since_global_update > MAX_GLOBAL_UPDATE_INTERVAL:
+			time_since_global_update = 0.0
 			update_centered_image()
 			update_global()
-			_image_dirty = false
+
+			_centered_image_dirty = false
+
 
 
 func _input(event: InputEvent) -> void:
@@ -193,8 +206,10 @@ func handle_input() -> void:
 	var line_pos2 = prev_mouse_pos if prev_mouse_pos else mouse_pos
 	draw_capsule(mouse_pos, line_pos2, curr_color)
 	prev_mouse_pos = mouse_pos
+
 	_image_dirty = true
 	_overlay_dirty = true
+	_centered_image_dirty = true
 
 
 func update_brush_size_ratio(increment: float) -> void:
@@ -205,7 +220,7 @@ func update_brush_size_ratio(increment: float) -> void:
 func update_compressed_image() -> void:
 	compressed_image.copy_from(image)
 	compressed_image.resize(MNIST_DATASET_IMAGE_SIZE, MNIST_DATASET_IMAGE_SIZE, Image.INTERPOLATE_LANCZOS)
-	compressed_image_node.texture.update(centered_image)
+	compressed_image_node.texture.update(compressed_image)
 
 
 func update_centered_image_array() -> void:
@@ -227,21 +242,33 @@ func update_centered_image() -> void:
 	var found = false
 	var centroid = Vector2.ZERO
 
-	for y in range(image.get_height()):
-		for x in range(image.get_width()):
-			var pixel = image.get_pixel(x, y)
+	var data = image.get_data()
+	var image_width = image.get_width()
+	var image_height = image.get_height()
 
-			centroid += Vector2(x, y) * pixel.r
+	var weight_sum = 0
 
-			if pixel.r < 0.2:
+	for y in range(image_height):
+		for x in range(image_width):
+			var idx = (y * image_width + x) * 4
+			var w = data[idx] / 255.0
+
+			if w <= 0.1:
 				continue
+
+			weight_sum += w
+
+			centroid.x += x * w
+			centroid.y += y * w
 
 			found = true
 
-			min_x = min(min_x, x)
-			max_x = max(max_x, x)
-			min_y = min(min_y, y)
-			max_y = max(max_y, y)
+			if x < min_x: min_x = x
+			if x > max_x: max_x = x
+			if y < min_y: min_y = y
+			if y > max_y: max_y = y
+
+	centroid /= weight_sum
 
 	if !found:
 		update_centered_image_array()
@@ -270,6 +297,7 @@ func update_centered_image() -> void:
 		sub_image, Rect2i(0, 0, target_width, target_height),
 		Vector2i((MNIST_DATASET_IMAGE_SIZE - target_width) / 2, (MNIST_DATASET_IMAGE_SIZE - target_height) / 2)
 	)
+
 
 	update_centered_image_array()
 
