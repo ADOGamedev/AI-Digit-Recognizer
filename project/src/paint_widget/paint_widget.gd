@@ -12,6 +12,7 @@ const UPDATE_INTERVAL = 1.0 / 24.0
 var ANTIALISING_WIDTH = 1
 
 const MNIST_DATASET_IMAGE_SIZE = 28
+const MNIST_DATASET_IMAGE_MARGIN = 4
 var centered_image_array : Array
 
 class ColorConfig:
@@ -118,9 +119,12 @@ func _process(delta: float) -> void:
 	if time_since_update >= UPDATE_INTERVAL:
 		time_since_update = 0.0
 		if _image_dirty:
-			image_node.texture.update(image)
+			if compressed_image_node.visible:
+				update_compressed_image()
+			else:
+				image_node.texture.update(image)
+
 			update_centered_image()
-			update_compressed_image()
 			update_global()
 			_image_dirty = false
 
@@ -201,7 +205,7 @@ func update_brush_size_ratio(increment: float) -> void:
 func update_compressed_image() -> void:
 	compressed_image.copy_from(image)
 	compressed_image.resize(MNIST_DATASET_IMAGE_SIZE, MNIST_DATASET_IMAGE_SIZE, Image.INTERPOLATE_LANCZOS)
-	compressed_image_node.texture.update(compressed_image)
+	compressed_image_node.texture.update(centered_image)
 
 
 func update_centered_image_array() -> void:
@@ -213,7 +217,7 @@ func update_centered_image_array() -> void:
 
 
 func update_centered_image() -> void:
-	# TODO: implement image centering MYSELF
+	centered_image.fill(Color.BLACK)
 	
 	var min_x = image.get_width()
 	var max_x = 0
@@ -221,72 +225,55 @@ func update_centered_image() -> void:
 	var max_y = 0
 
 	var found = false
+	var centroid = Vector2.ZERO
 
-	# 1. Encontrar el bounding box exacto
 	for y in range(image.get_height()):
 		for x in range(image.get_width()):
-			if image.get_pixel(x, y).r > 0.1: # Ignorar píxeles casi negros (aliasing fantasma)
-				found = true
-				min_x = min(x, min_x)
-				max_x = max(x, max_x)
-				min_y = min(y, min_y)
-				max_y = max(y, max_y)
+			var pixel = image.get_pixel(x, y)
+
+			centroid += Vector2(x, y) * pixel.r
+
+			if pixel.r < 0.2:
+				continue
+
+			found = true
+
+			min_x = min(min_x, x)
+			max_x = max(max_x, x)
+			min_y = min(min_y, y)
+			max_y = max(max_y, y)
 
 	if !found:
-		centered_image.fill(Color.BLACK)
 		update_centered_image_array()
 		return
 
 	var width = max_x - min_x + 1
 	var height = max_y - min_y + 1
-	
+
+	var target_width = MNIST_DATASET_IMAGE_SIZE - 2 * MNIST_DATASET_IMAGE_MARGIN
+	var target_height = MNIST_DATASET_IMAGE_SIZE - 2 * MNIST_DATASET_IMAGE_MARGIN
+
+	if width <= 0 or height <= 0:
+		update_centered_image_array()
+		return	
+
+	if width > height:
+		target_height *= height / float(width)
+	else:
+		target_width *= width / float(height)
+
 	var rect = Rect2i(min_x, min_y, width, height)
-	var cropped = image.get_region(rect)
+	var sub_image = image.get_region(rect)
+	sub_image.resize(target_width, target_height, Image.INTERPOLATE_LANCZOS)
 
-	# 2. Escalar para que el lado más largo mida exactamente 20 píxeles (Estándar MNIST)
-	var max_dim = max(width, height)
-	var scale_factor = 20.0 / float(max_dim)
-	
-	var new_width = max(1, int(width * scale_factor))
-	var new_height = max(1, int(height * scale_factor))
-	
-	# INTERPOLATE_BILINEAR es menos agresivo que LANCZOS y evita valores extraños
-	cropped.resize(new_width, new_height, Image.INTERPOLATE_BILINEAR) 
-
-	# 3. Calcular el Centro de Masa (Center of Mass)
-	var sum_x = 0.0
-	var sum_y = 0.0
-	var total_mass = 0.0
-
-	for y in range(new_height):
-		for x in range(new_width):
-			var pixel_val = cropped.get_pixel(x, y).r
-			if pixel_val > 0.0:
-				sum_x += x * pixel_val
-				sum_y += y * pixel_val
-				total_mass += pixel_val
-
-	var com_x = sum_x / total_mass if total_mass > 0 else new_width / 2.0
-	var com_y = sum_y / total_mass if total_mass > 0 else new_height / 2.0
-
-	# 4. Pegar sobre una imagen de 28x28 fijando el Centro de Masa en (14, 14)
-	centered_image.fill(Color.BLACK)
-	
-	var offset_x = int(round(14.0 - com_x))
-	var offset_y = int(round(14.0 - com_y))
-
-	for y in range(new_height):
-		for x in range(new_width):
-			var target_x = x + offset_x
-			var target_y = y + offset_y
-			
-			# Asegurar que no dibujamos fuera de los bordes 28x28
-			if target_x >= 0 and target_x < MNIST_DATASET_IMAGE_SIZE and target_y >= 0 and target_y < MNIST_DATASET_IMAGE_SIZE:
-				var color = cropped.get_pixel(x, y)
-				centered_image.set_pixel(target_x, target_y, color)
+	centered_image.blit_rect(
+		sub_image, Rect2i(0, 0, target_width, target_height),
+		Vector2i((MNIST_DATASET_IMAGE_SIZE - target_width) / 2, (MNIST_DATASET_IMAGE_SIZE - target_height) / 2)
+	)
 
 	update_centered_image_array()
 
+	
 
 func update_global() -> void:
 	Global.update_requested = true
@@ -345,6 +332,11 @@ func clear() -> void:
 
 
 func toggle_compressed_image_visibility() -> void:
+	if compressed_image_node.visible:
+		image_node.texture.update(image)
+	else:
+		update_compressed_image()
+
 	compressed_image_node.visible = !compressed_image_node.visible
 
 func toggle_grid_visibility() -> void:
