@@ -1,18 +1,19 @@
 extends Control
 
-@onready var paint_wiget := %PaintWidget
+@onready var paint_widget := %PaintWidget
 
 
 func _on_reload_button_pressed() -> void:
-	paint_wiget.clear()
+	paint_widget.clear()
 
 
 func _on_grid_button_pressed() -> void:
-	paint_wiget.toggle_grid_visibility()
+	paint_widget.toggle_grid_visibility()
 
 
 func _on_pixelate_button_pressed() -> void:
-	paint_wiget.toggle_compressed_image_visibility()
+	paint_widget.toggle_compressed_image_visibility()
+
 
 func _on_invert_color_button_pressed() -> void:
-	paint_wiget.invert_color()
+	paint_widget.invert_color()
