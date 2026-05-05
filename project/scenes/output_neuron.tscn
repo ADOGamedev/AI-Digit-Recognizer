@@ -1,0 +1,139 @@
+[gd_scene format=3 uid="uid://byyfiqhyqicm"]
+
+[ext_resource type="Shader" uid="uid://dpkoa8cgol6ef" path="res://src/output_neuron/neuron_shader.gdshader" id="1_c66uq"]
+[ext_resource type="Script" uid="uid://dl5do02xq2h1o" path="res://src/output_neuron/output_neuron.gd" id="1_u51b6"]
+[ext_resource type="FontFile" uid="uid://bka283m8mt5dm" path="res://assets/fonts/Inter_18pt-Black.ttf" id="2_gcgqk"]
+[ext_resource type="Shader" uid="uid://b3so0wdw3l5b6" path="res://src/paint_widget_controller/liquid_glass.gdshader" id="2_vsuou"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mrtql"]
+shader = ExtResource("2_vsuou")
+shader_parameter/blur = 4.154000197315
+shader_parameter/warp_intensity = 2.0
+shader_parameter/strength_x = 100.0
+shader_parameter/strength_y = 100.0
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/corner_radius = 1.0
+shader_parameter/edge_smoothness = 1.450000045125
+shader_parameter/tint = Color(0.95, 0.96999997, 1, 0.07058824)
+shader_parameter/edge_highlight = Color(1, 1, 1, 0.039215688)
+shader_parameter/edge_width = 4.678000222205
+shader_parameter/chromatic_strength = 5.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_goljv"]
+shader = ExtResource("2_vsuou")
+shader_parameter/blur = 3.8850001845375
+shader_parameter/warp_intensity = 2.0
+shader_parameter/strength_x = 100.0
+shader_parameter/strength_y = 100.0
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/corner_radius = 1.0
+shader_parameter/edge_smoothness = 0.5
+shader_parameter/tint = Color(0.21, 0.21, 0.21, 0.12156863)
+shader_parameter/edge_highlight = Color(1, 1, 1, 0.07058824)
+shader_parameter/edge_width = 12.4670005921825
+shader_parameter/chromatic_strength = 5.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vsuou"]
+resource_local_to_scene = true
+shader = ExtResource("1_c66uq")
+shader_parameter/value = 0.0
+shader_parameter/radius = 0.53200002527
+
+[sub_resource type="FontVariation" id="FontVariation_u51b6"]
+base_font = ExtResource("2_gcgqk")
+
+[sub_resource type="FontVariation" id="FontVariation_vsuou"]
+base_font = ExtResource("2_gcgqk")
+baseline_offset = 0.275
+
+[node name="OutputNeuron" type="Control" unique_id=422366018]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_u51b6")
+
+[node name="neuron_hboX_cont" type="HBoxContainer" parent="." unique_id=140712163]
+layout_mode = 0
+offset_right = 236.0
+offset_bottom = 61.0
+theme_override_constants/separation = -31
+
+[node name="line_margin" type="MarginContainer" parent="neuron_hboX_cont" unique_id=908480216]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 23
+theme_override_constants/margin_bottom = 23
+
+[node name="line" type="ColorRect" parent="neuron_hboX_cont/line_margin" unique_id=1444058773]
+material = SubResource("ShaderMaterial_mrtql")
+custom_minimum_size = Vector2(100, 15)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="neuron_outline" type="ColorRect" parent="neuron_hboX_cont" unique_id=203226926]
+material = SubResource("ShaderMaterial_goljv")
+custom_minimum_size = Vector2(61, 61)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.81
+
+[node name="neuron_label" type="Label" parent="neuron_hboX_cont/neuron_outline" unique_id=1410292104]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="neuron_progress_panel" type="ColorRect" parent="neuron_hboX_cont/neuron_outline" unique_id=570049253]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_vsuou")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="labels_margin" type="MarginContainer" parent="neuron_hboX_cont" unique_id=688069783]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 55
+
+[node name="labels_gbox_cont" type="HBoxContainer" parent="neuron_hboX_cont/labels_margin" unique_id=1764197782]
+layout_mode = 2
+theme_override_constants/separation = 17
+
+[node name="digit_label" type="Label" parent="neuron_hboX_cont/labels_margin/labels_gbox_cont" unique_id=343494403]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 0.7137255)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 0.13725491)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/shadow_outline_size = 25
+theme_override_fonts/font = SubResource("FontVariation_u51b6")
+theme_override_font_sizes/font_size = 44
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="value_label" type="Label" parent="neuron_hboX_cont/labels_margin/labels_gbox_cont" unique_id=916653873]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 4.33
+theme_override_colors/font_color = Color(0.93, 0.93, 0.93, 0.43529412)
+theme_override_fonts/font = SubResource("FontVariation_vsuou")
+theme_override_font_sizes/font_size = 25
+text = "0.99"
+vertical_alignment = 1

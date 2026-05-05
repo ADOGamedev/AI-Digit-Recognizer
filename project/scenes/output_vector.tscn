@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://1jsk27fv3sje"]
+
+[ext_resource type="PackedScene" uid="uid://byyfiqhyqicm" path="res://scenes/output_neuron.tscn" id="1_3hs1k"]
+
+[node name="OutputVector" type="Control" unique_id=1596932900]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="neurons_vbox_cont" type="VBoxContainer" parent="." unique_id=1990646979]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1094.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="OutputNeuron" parent="neurons_vbox_cont" unique_id=422366018 instance=ExtResource("1_3hs1k")]
+layout_mode = 2
+size_flags_vertical = 3
+digit = 0
+
+[node name="OutputNeuron2" parent="neurons_vbox_cont" unique_id=260236512 instance=ExtResource("1_3hs1k")]
+layout_mode = 2
+size_flags_vertical = 3
+digit = 1
+
+[node name="OutputNeuron3" parent="neurons_vbox_cont" unique_id=1372733627 instance=ExtResource("1_3hs1k")]
+layout_mode = 2
+size_flags_vertical = 3
+digit = 2
+
+[node name="OutputNeuron4" parent="neurons_vbox_cont" unique_id=1856085715 instance=ExtResource("1_3hs1k")]
+layout_mode = 2
+size_flags_vertical = 3
+digit = 3
+
+[node name="OutputNeuron5" parent="neurons_vbox_cont" unique_id=2072249478 instance=ExtResource("1_3hs1k")]
+layout_mode = 2
+size_flags_vertical = 3
+digit = 4
+
+[node name="OutputNeuron6" parent="neurons_vbox_cont" unique_id=1696035265 instance=ExtResource("1_3hs1k")]
+layout_mode = 2
+size_flags_vertical = 3
+digit = 5
+
+[node name="OutputNeuron7" parent="neurons_vbox_cont" unique_id=1191980486 instance=ExtResource("1_3hs1k")]
+layout_mode = 2
+size_flags_vertical = 3
+digit = 6
+
+[node name="OutputNeuron8" parent="neurons_vbox_cont" unique_id=82510119 instance=ExtResource("1_3hs1k")]
+layout_mode = 2
+size_flags_vertical = 3
+digit = 7
+
+[node name="OutputNeuron9" parent="neurons_vbox_cont" unique_id=714792196 instance=ExtResource("1_3hs1k")]
+layout_mode = 2
+size_flags_vertical = 3
+digit = 8
+
+[node name="OutputNeuron10" parent="neurons_vbox_cont" unique_id=1282596690 instance=ExtResource("1_3hs1k")]
+layout_mode = 2
+size_flags_vertical = 3
+digit = 9

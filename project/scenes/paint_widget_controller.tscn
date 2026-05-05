@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://d1nb5ir4s8l4i" path="res://scenes/controller_button.tscn" id="5_4gis4"]
 [ext_resource type="Texture2D" uid="uid://b1eewl6uhuf24" path="res://assets/images/reload_icon.png" id="5_5j2ha"]
 [ext_resource type="Texture2D" uid="uid://balktfhkt36rv" path="res://assets/images/pixelate_icon.png" id="6_nxkeu"]
+[ext_resource type="Texture2D" uid="uid://b45yl5ajwhi4k" path="res://assets/images/invert_color_icon.png" id="9_m80be"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m80be"]
 shader = ExtResource("2_4gis4")
@@ -63,74 +64,41 @@ expand_margin_bottom = 1.0
 shadow_color = Color(1, 1, 1, 0.02745098)
 shadow_size = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rwgg4"]
-resource_local_to_scene = true
-bg_color = Color(0.83, 0.83, 0.83, 0.16078432)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
-border_color = Color(0.8, 0.8, 0.8, 0.23529412)
-border_blend = true
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
-shadow_color = Color(0, 0, 0, 0.1882353)
-shadow_size = 20
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4gis4"]
-resource_local_to_scene = true
-bg_color = Color(0.91, 0.91, 0.91, 0.16078432)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
-border_color = Color(1, 1, 1, 0.36078432)
-border_blend = true
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
-expand_margin_bottom = 5.0
-shadow_color = Color(0.9, 0.9, 0.9, 0.19215687)
-shadow_size = 20
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m80be"]
-resource_local_to_scene = true
-bg_color = Color(0.83, 0.83, 0.83, 0.16078432)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
-border_color = Color(0.8, 0.8, 0.8, 0.23529412)
-border_blend = true
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
-shadow_color = Color(0, 0, 0, 0.1882353)
-shadow_size = 20
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yymif"]
 resource_local_to_scene = true
-bg_color = Color(0.91, 0.91, 0.91, 0.16078432)
+bg_color = Color(0.83, 0.83, 0.83, 0.16078432)
 border_width_left = 8
 border_width_top = 8
 border_width_right = 8
 border_width_bottom = 8
-border_color = Color(1, 1, 1, 0.36078432)
+border_color = Color(0.8, 0.8, 0.8, 0.23529412)
 border_blend = true
 corner_radius_top_left = 15
 corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
-expand_margin_bottom = 5.0
-shadow_color = Color(0.9, 0.9, 0.9, 0.19215687)
+shadow_color = Color(0, 0, 0, 0.1882353)
 shadow_size = 20
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7eg3b"]
 resource_local_to_scene = true
+bg_color = Color(0.91, 0.91, 0.91, 0.16078432)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(1, 1, 1, 0.36078432)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_bottom = 5.0
+shadow_color = Color(0.9, 0.9, 0.9, 0.19215687)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4m4uc"]
+resource_local_to_scene = true
 bg_color = Color(0.83, 0.83, 0.83, 0.16078432)
 border_width_left = 8
 border_width_top = 8
@@ -145,7 +113,73 @@ corner_radius_bottom_left = 15
 shadow_color = Color(0, 0, 0, 0.1882353)
 shadow_size = 20
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4m4uc"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ccqhj"]
+resource_local_to_scene = true
+bg_color = Color(0.91, 0.91, 0.91, 0.16078432)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(1, 1, 1, 0.36078432)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_bottom = 5.0
+shadow_color = Color(0.9, 0.9, 0.9, 0.19215687)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oad34"]
+resource_local_to_scene = true
+bg_color = Color(0.83, 0.83, 0.83, 0.16078432)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.8, 0.8, 0.8, 0.23529412)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0, 0, 0, 0.1882353)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oofue"]
+resource_local_to_scene = true
+bg_color = Color(0.91, 0.91, 0.91, 0.16078432)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(1, 1, 1, 0.36078432)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_bottom = 5.0
+shadow_color = Color(0.9, 0.9, 0.9, 0.19215687)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u77cu"]
+resource_local_to_scene = true
+bg_color = Color(0.83, 0.83, 0.83, 0.16078432)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.8, 0.8, 0.8, 0.23529412)
+border_blend = true
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0, 0, 0, 0.1882353)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2osth"]
 resource_local_to_scene = true
 bg_color = Color(0.91, 0.91, 0.91, 0.16078432)
 border_width_left = 8
@@ -220,38 +254,47 @@ layout_mode = 2
 [node name="controllers_margin" type="MarginContainer" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer" unique_id=1841268082]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 175
+theme_override_constants/margin_left = 160
 theme_override_constants/margin_top = 36
-theme_override_constants/margin_right = 175
+theme_override_constants/margin_right = 160
 theme_override_constants/margin_bottom = -12
 
 [node name="controls_hbox_controller" type="HBoxContainer" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin" unique_id=456490529]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 84
+theme_override_constants/separation = 40
 
 [node name="grid_button" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller" unique_id=621284771 instance=ExtResource("5_4gis4")]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_rwgg4")
-theme_override_styles/hover = SubResource("StyleBoxFlat_4gis4")
+theme_override_styles/normal = SubResource("StyleBoxFlat_yymif")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7eg3b")
 icon_texture = ExtResource("4_v3ijk")
 
 [node name="reload_button" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller" unique_id=648616860 instance=ExtResource("5_4gis4")]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_m80be")
-theme_override_styles/hover = SubResource("StyleBoxFlat_yymif")
+theme_override_styles/normal = SubResource("StyleBoxFlat_4m4uc")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ccqhj")
 icon_texture = ExtResource("5_5j2ha")
 
 [node name="pixelate_button" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller" unique_id=1645201481 instance=ExtResource("5_4gis4")]
 texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_7eg3b")
-theme_override_styles/hover = SubResource("StyleBoxFlat_4m4uc")
+theme_override_styles/normal = SubResource("StyleBoxFlat_oad34")
+theme_override_styles/hover = SubResource("StyleBoxFlat_oofue")
 icon_texture = ExtResource("6_nxkeu")
+
+[node name="invert_color_button" parent="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller" unique_id=1498119393 instance=ExtResource("5_4gis4")]
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_u77cu")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2osth")
+icon_texture = ExtResource("9_m80be")
 
 [connection signal="pressed" from="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller/grid_button" to="." method="_on_grid_button_pressed"]
 [connection signal="pressed" from="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller/reload_button" to="." method="_on_reload_button_pressed"]
 [connection signal="pressed" from="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller/pixelate_button" to="." method="_on_pixelate_button_pressed"]
+[connection signal="pressed" from="paint_widge_outer_panel/paint_widget_margin/VBoxContainer/controllers_margin/controls_hbox_controller/invert_color_button" to="." method="_on_invert_color_button_pressed"]

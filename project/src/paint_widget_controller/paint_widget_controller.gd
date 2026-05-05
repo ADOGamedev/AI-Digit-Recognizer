@@ -13,3 +13,6 @@ func _on_grid_button_pressed() -> void:
 
 func _on_pixelate_button_pressed() -> void:
 	paint_wiget.toggle_compressed_image_visibility()
+
+func _on_invert_color_button_pressed() -> void:
+	paint_wiget.invert_color()

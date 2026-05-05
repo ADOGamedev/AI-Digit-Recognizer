@@ -9,13 +9,21 @@ void Main::_ready() {
     godot_logger = GodotLogger();
     Logger::set_logger(&godot_logger);
 
-    global = get_tree()->get_root()->get_node<Node>("Global");
+    global = get_tree()->get_root()->get_node_or_null("Global");
 
     neural_net.load_from_json("D:\\My Projects\\AI Digit Recognizer\\src\\neural_network\\final_trained_network.json");
 
+    if (!global) {
+        Logger::log("Global node not found!");
+        return;
+    }
 }
 
 void Main::_process(double delta) {
+    if (!global) {
+        return;
+    }
+    
     if (!global->get("update_requested")) {
         return;
     }
@@ -31,10 +39,17 @@ void Main::_process(double delta) {
     neural_net.compute_output();
 
     int guessed_digit;
-    neural_net.get_output_layer().values.maxCoeff(&guessed_digit);
+
+    Layer output_layer = neural_net.get_output_layer();
+    output_layer.values.maxCoeff(&guessed_digit);
 
     global->set("guessed_digit", guessed_digit);
-    global->set("update_requested", false);
 
-    Logger::log(std::to_string((int)global->get("guessed_digit")));
+    Array godot_arr_outputs;
+    for (int i = 0; i < 10; i++) {
+        godot_arr_outputs.append(output_layer.values(i));
+    }
+
+    global->set("output_vector", godot_arr_outputs);
+    global->set("update_requested", false);
 }

@@ -37,7 +37,7 @@ var compressed_image : Image
 var centered_image : Image
 var brush_overlay_image : Image
 
-@export var brush_size_ratio = 2.0 / MNIST_DATASET_IMAGE_SIZE
+@export var brush_size_ratio = 0.1
 @onready var brush_size = image_node.size.y * brush_size_ratio
 @export var BRUSH_SIZE_RATIO_INCREMENT = 0.01
 
@@ -57,7 +57,6 @@ func _ready() -> void:
 	_rebuild_canvas()
 
 	min_brush_size_ratio = 1.0 / image_node.size.y
-	brush_size_ratio = 2.0 / MNIST_DATASET_IMAGE_SIZE
 	brush_size = image_node.size.y * brush_size_ratio
 
 
@@ -372,3 +371,7 @@ func toggle_grid_visibility() -> void:
 
 func get_image_node_size() -> Vector2:
 	return image_node.size
+
+func invert_color() -> void:
+	var curr = $CenterContainer.material.get_shader_parameter("invert")
+	$CenterContainer.material.set_shader_parameter("invert", !curr)

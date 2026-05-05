@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://dh8q5th2hiou5"]
+
+[ext_resource type="Script" uid="uid://c6e7kqryb2bfj" path="res://src/big_digit_value_pair/big_digit_value_pair.gd" id="1_tk3cd"]
+[ext_resource type="FontFile" uid="uid://bka283m8mt5dm" path="res://assets/fonts/Inter_18pt-Black.ttf" id="2_r5yl2"]
+
+[sub_resource type="FontVariation" id="FontVariation_hlfto"]
+base_font = ExtResource("2_r5yl2")
+
+[sub_resource type="FontVariation" id="FontVariation_ypi0h"]
+base_font = ExtResource("2_r5yl2")
+
+[node name="BigDigitValuePair" type="Control" unique_id=127754908]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tk3cd")
+
+[node name="labels_margin" type="MarginContainer" parent="." unique_id=2112828030]
+layout_mode = 0
+offset_right = 390.0
+offset_bottom = 431.0
+
+[node name="labels_vbox_cont" type="VBoxContainer" parent="labels_margin" unique_id=239250980]
+layout_mode = 2
+theme_override_constants/separation = 17
+
+[node name="digit_label" type="Label" parent="labels_margin/labels_vbox_cont" unique_id=1305626906]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.7137255)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 0.13725491)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/shadow_outline_size = 141
+theme_override_fonts/font = SubResource("FontVariation_hlfto")
+theme_override_font_sizes/font_size = 256
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="value_margin" type="MarginContainer" parent="labels_margin/labels_vbox_cont" unique_id=635703515]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+
+[node name="value_label" type="Label" parent="labels_margin/labels_vbox_cont/value_margin" unique_id=1432749079]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 4.33
+theme_override_colors/font_color = Color(0.93, 0.93, 0.93, 0.43529412)
+theme_override_fonts/font = SubResource("FontVariation_ypi0h")
+theme_override_font_sizes/font_size = 52
+text = "Confidence:
+0.99"
+horizontal_alignment = 1

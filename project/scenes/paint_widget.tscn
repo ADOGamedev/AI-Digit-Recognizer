@@ -7,6 +7,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wkb5n"]
 shader = ExtResource("2_wkb5n")
 shader_parameter/radius = 0.1
+shader_parameter/invert = false
 
 [sub_resource type="ImageTexture" id="ImageTexture_m0ngg"]
 

@@ -16,7 +16,7 @@ uniform float edge_smoothness : hint_range(0.5, 3.0) = 1.0;
 
 uniform vec4 tint : source_color = vec4(0.95, 0.97, 1.0, 0.12);
 uniform vec4 edge_highlight : source_color = vec4(1.0, 1.0, 1.0, 0.3);
-uniform float edge_width : hint_range(0.0, 10.0) = 1.5;
+uniform float edge_width : hint_range(0.0, 50.0) = 1.5;
 uniform float chromatic_strength : hint_range(0.0, 5.0) = 5.0;
 
 float rounded_box(vec2 p, vec2 b, float r) {
