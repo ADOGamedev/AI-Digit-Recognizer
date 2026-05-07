@@ -25,9 +25,6 @@ void Trainer::update_net_for_a_single_batch(std::vector<MNISTImageLabel>& batch)
     }
 
     for (int i = 0; i < accumulated.biases.size(); i++) {
-        /*std::ostringstream oss;
-        oss << (-learning_rate / batch.size() * accumulated.biases[i]);
-        Logger::log("Changing bias " + std::to_string(i + 1) + " by \n" + oss.str());*/
         network->change_biases(i + 1, -learning_rate * accumulated.biases[i]);
     }
     for (int i = 0; i < accumulated.weights.size(); i++) {
