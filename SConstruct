@@ -8,12 +8,17 @@ env.Append(CPPPATH=["src/", "src/thirdparty/eigen-5.0.0/", "src/thirdparty/nlohm
 
 sources = Glob("src/*.cpp") # type: ignore
 sources += Glob("src/**/*.cpp") # type: ignore
+sources += Glob("src/neural_network/**/*.cpp") # type: ignore
 sources += Glob("src//thirdparty/mnist-loader/src/*.cc") # type: ignore
 
 lib_filename = "{}ai_digit_recognizer{}{}".format(env.subst('$SHLIBPREFIX'), env["suffix"], env.subst('$SHLIBSUFFIX'))
 
 library = env.SharedLibrary(
     "project/bin/{}".format(lib_filename),
+    source=sources,
+)
+library = env.Program(
+    "build/ai_digit_recognizer",
     source=sources,
 )
 

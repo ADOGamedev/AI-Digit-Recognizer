@@ -21,12 +21,16 @@ namespace MNISTDataset {
 struct MNISTImageLabel {
     MNISTImageLabel() = default;
 
-    MNISTImageLabel(const std::vector<double>& img_values, const int label_int) :
-    image_values(Eigen::VectorXd::Map(img_values.data(), img_values.size())) {
+    MNISTImageLabel(const std::vector<double>& img_values, const int label_int) {
+        for (int y = 0; y < MNISTDataset::MNIST_IMAGE_SIZE; y++) {
+            for (int x = 0; x < MNISTDataset::MNIST_IMAGE_SIZE; x++) {
+                image_values(y, x) = img_values[y * MNISTDataset::MNIST_IMAGE_SIZE + x];
+            }
+        }
         label(label_int) = 1.0;
     }
     
-    VectorXd image_values = VectorXd::Zero(MNISTDataset::MNIST_IMAGE_SIZE * MNISTDataset::MNIST_IMAGE_SIZE);
+    MatrixXd image_values = MatrixXd::Zero(MNISTDataset::MNIST_IMAGE_SIZE, MNISTDataset::MNIST_IMAGE_SIZE);
     VectorXd label = VectorXd::Zero(10);
 };
 
@@ -64,26 +68,5 @@ namespace MNISTDataset {
                 batches[i][j] = MNISTImageLabel(image, label);
             }
         }
-    }
-
-    inline void print_image(const int batch, const int index) {
-        VectorXd& image = batches[batch][index].image_values;
-
-        Logger::log("+----------------------------------------------------------+");
-        for (int y = 0; y < MNIST_IMAGE_SIZE; y++) {
-            std::string row = "| ";
-            
-            for (int x = 0; x < MNIST_IMAGE_SIZE; x++) {
-                double val = image(y * MNIST_IMAGE_SIZE + x);
-                if (val <= 0.0) row += "  ";
-                else if (val <= 0.3) row += ". ";
-                else if (val <= 0.7) row += "* ";
-                else row += "# ";
-            } 
-
-            row += " |";
-            Logger::log(row);
-        }
-        Logger::log("+----------------------------------------------------------+");
     }
 }

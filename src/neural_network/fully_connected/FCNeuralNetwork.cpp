@@ -1,7 +1,7 @@
-#include "NeuralNetwork.h"
+#include "FCNeuralNetwork.h"
 
 
-void NeuralNetwork::randomize_weights_xavier() {
+void FCNeuralNetwork::randomize_weights_xavier() {
     for (int i = 0; i < weight_matrices.size(); i++) {
         int n_in = layers[i].neurons_count;
         int n_out = layers[i + 1].neurons_count;
@@ -13,7 +13,7 @@ void NeuralNetwork::randomize_weights_xavier() {
 }
 
 
-void NeuralNetwork::load_from_json(const std::string& path) {
+void FCNeuralNetwork::load_from_json(const std::string& path) {
     std::ifstream json_file(path);
     nlohmann::json data = nlohmann::json::parse(json_file);
 
@@ -61,7 +61,7 @@ void NeuralNetwork::load_from_json(const std::string& path) {
     }
 }
 
-void NeuralNetwork::save_to_json(const std::string& path) {
+void FCNeuralNetwork::save_to_json(const std::string& path) {
     nlohmann::json data;
     data["inputs"] = layers[0].neurons_count;
 
@@ -84,7 +84,7 @@ void NeuralNetwork::save_to_json(const std::string& path) {
     file.close();
 }
 
-void NeuralNetwork::compute_output() {
+void FCNeuralNetwork::compute_output() {
     for (int i = 0; i < layers_count - 1; i++) {
         VectorXd z = weight_matrices[i].matrix * layers[i].values + layers[i + 1].biases;
         layers[i + 1].z_values = z;
@@ -92,7 +92,7 @@ void NeuralNetwork::compute_output() {
     }
 }
 
-void NeuralNetwork::set_input_layer(const VectorXd& values) {
+void FCNeuralNetwork::set_input_layer(const VectorXd& values) {
     if (layers[0].neurons_count != values.size()) {
         Logger::logerr("ERROR: trying to set inputs with " + std::to_string(values.size()) + " values");
         return;
@@ -101,12 +101,12 @@ void NeuralNetwork::set_input_layer(const VectorXd& values) {
 }
 
 
-Layer NeuralNetwork::get_output_layer() {
+Layer FCNeuralNetwork::get_output_layer() {
     return get_layer(layers_count - 1);
 }
 
 
-Layer NeuralNetwork::get_layer(int index) {
+Layer FCNeuralNetwork::get_layer(int index) {
     if (index < layers_count) {
         return layers[index];
     }
@@ -115,7 +115,7 @@ Layer NeuralNetwork::get_layer(int index) {
     }
 }
 
-WeightMatrix NeuralNetwork::get_weight_matrix(int index) {
+WeightMatrix FCNeuralNetwork::get_weight_matrix(int index) {
     if (index < weight_matrices.size()) {
         return weight_matrices[index];
     }
@@ -124,7 +124,7 @@ WeightMatrix NeuralNetwork::get_weight_matrix(int index) {
     }
 }
 
-void NeuralNetwork::change_biases(const int layer_index, const VectorXd& amount) {
+void FCNeuralNetwork::change_biases(const int layer_index, const VectorXd& amount) {
     if (layer_index >= layers.size()) {
         Logger::log("ERROR: trying to change the bias of an out-out-bounds layer");
         return;
@@ -133,7 +133,7 @@ void NeuralNetwork::change_biases(const int layer_index, const VectorXd& amount)
 }
 
 
-void NeuralNetwork::change_weights(const int weight_index, const MatrixXd& amount) {
+void FCNeuralNetwork::change_weights(const int weight_index, const MatrixXd& amount) {
     if (weight_index >= weight_matrices.size()) {
         Logger::log("ERROR: trying to change the weights of an out-out-bounds weight matrix");
         return;
@@ -142,6 +142,6 @@ void NeuralNetwork::change_weights(const int weight_index, const MatrixXd& amoun
 }
 
 
-VectorXd NeuralNetwork::sigmoid(const VectorXd& v) {
+VectorXd FCNeuralNetwork::sigmoid(const VectorXd& v) {
     return (1.0 / (1.0 + (-v.array()).exp())).matrix();
 }

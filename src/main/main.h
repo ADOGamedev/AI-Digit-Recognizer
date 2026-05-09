@@ -12,7 +12,8 @@
 #include <godot_cpp/classes/window.hpp>
 
 #include "../logger/Logger.h"
-#include "../neural_network/NeuralNetwork.h"
+#include "../neural_network/fully_connected/FCNeuralNetwork.h"
+#include "../neural_network/cnn/CNN.h"
 #include "../mnist_dataset/MNISTDataset.h"
 #include "../trainer/Trainer.h"
 
@@ -47,7 +48,7 @@ public:
 private:
     GodotLogger godot_logger;
 
-    NeuralNetwork neural_net{};
+    FCNeuralNetwork neural_net{};
     Node* global;
 
 };

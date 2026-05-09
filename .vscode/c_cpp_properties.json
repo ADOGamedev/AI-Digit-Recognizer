@@ -7,6 +7,7 @@
                 "C:/msys64/ucrt64/include/c++/15.2.0",
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/src/**",
+                "${workspaceFolder}/src/neural_network/**",
                 "${workspaceFolder}/src/thirdparty/eigen-5.0.0/",
                 "${workspaceFolder}/src/thirdparty/nlohmann/",
                 "${workspaceFolder}/src/thirdparty/mnist-loader/include/"
