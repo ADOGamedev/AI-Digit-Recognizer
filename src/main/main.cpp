@@ -6,62 +6,26 @@ int main() {
     Logger::Logger logger = Logger::Logger();
     Logger::set_logger(&logger);
 
-    std::vector<int> kernels_per_layer = {2, 4};
-    CNN cnn = CNN(kernels_per_layer);
+    CNN cnn = CNN();
+    cnn.load_from_json("G:\\My Projects\\AI Digit Recognizer\\src\\neural_network\\cnn\\cnn.json");
 
     MNISTDataset::load_data();
 
-    ConvolutionalLayer conv_layer(1, 1);
+    Tensor input = {MNISTDataset::test_examples[0].image_values};
 
-    Tensor tensor = {MNISTDataset::test_examples[3].image_values};
+    cnn.set_input(input);
+    cnn.do_forward_pass();
 
-    conv_layer.set_image_tensor(tensor);
-    
-    Kernel h_kernel = Kernel(1, KERNEL_SIZE);
-    MatrixXd h_kernel_values(KERNEL_SIZE, KERNEL_SIZE);
-    h_kernel_values << -1,  0,  1,
-                       -2,  0,  2,
-                       -1,  0,  1;
-    h_kernel.values = {h_kernel_values};
-
-    // Bordes horizontales (gradiente vertical)
-    Kernel v_kernel = Kernel(1, KERNEL_SIZE);
-    MatrixXd v_kernel_values(KERNEL_SIZE, KERNEL_SIZE);
-    v_kernel_values <<  1,  2,  1,
-                        0,  0,  0,
-                       -1, -2, -1;
-    v_kernel.values = {v_kernel_values};
-
-    // Todos los bordes (Laplaciano)
-    Kernel l_kernel = Kernel(1, KERNEL_SIZE);
-    MatrixXd l_kernel_values(KERNEL_SIZE, KERNEL_SIZE);
-    l_kernel_values <<  0, -1,  0,
-                       -1,  4, -1,
-                        0, -1,  0;
-    l_kernel.values = {l_kernel_values};
-
-    // Bordes diagonales
-    Kernel d_kernel = Kernel(1, KERNEL_SIZE);
-    MatrixXd d_kernel_values(KERNEL_SIZE, KERNEL_SIZE);
-    d_kernel_values << -1, -1,  0,
-                       -1,  0,  1,
-                        0,  1,  1;
-    d_kernel.values = {d_kernel_values};
-
-    conv_layer.kernels = {v_kernel};
-    
-    ConvolutionalLayer conv_layer2(1, 4);
-    conv_layer2.image_tensor = conv_layer.do_convolution();
-    conv_layer2.image_tensor = conv_layer2.do_max_pooling();
-    
-    conv_layer2.kernels = {h_kernel, v_kernel, l_kernel, d_kernel};
-
-    print_image_matrix(tensor[0]);
-    print_image_matrix(conv_layer.do_convolution()[0]);
-    print_image_matrix(conv_layer2.do_convolution()[0]);
-    print_image_matrix(conv_layer2.do_convolution()[1]);
-    print_image_matrix(conv_layer2.do_convolution()[2]);
-    print_image_matrix(conv_layer2.do_convolution()[3]);
+    for (int i = 0; i < cnn.layers_count; i++) {
+        Logger::log("############################################");
+        for (MatrixXd& img : cnn.get_img_tensor(i)) {
+            print_image_matrix(img);
+        }
+    }
+    Logger::log("############################################");
+    for (MatrixXd& img : cnn.get_output_tensor()) {
+        print_image_matrix(img);
+    }
 }
 
 

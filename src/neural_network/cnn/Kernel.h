@@ -11,7 +11,7 @@ using Tensor = std::vector<MatrixXd>;
 const int KERNEL_SIZE = 3;
 
 struct Kernel {
-
+    Kernel() = default;
     Kernel(const int c, const int s) {
         size = s;
         channels = c;

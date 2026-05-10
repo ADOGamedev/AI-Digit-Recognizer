@@ -11,11 +11,11 @@ namespace MNISTDataset {
     constexpr int MNIST_IMAGE_SIZE = 28;
     constexpr int IMAGES_PER_BATCH = 20;
     
-    inline std::string PATH_TO_TRAINING_LABELS = "D:\\My Projects\\AI Digit Recognizer\\src\\mnist_dataset\\train-labels.idx1-ubyte";
-    inline std::string PATH_TO_TRAINING_IMAGES = "D:\\My Projects\\AI Digit Recognizer\\src\\mnist_dataset\\train-images.idx3-ubyte";
+    inline std::string PATH_TO_TRAINING_LABELS = "G:\\My Projects\\AI Digit Recognizer\\src\\mnist_dataset\\train-labels.idx1-ubyte";
+    inline std::string PATH_TO_TRAINING_IMAGES = "G:\\My Projects\\AI Digit Recognizer\\src\\mnist_dataset\\train-images.idx3-ubyte";
     
-    inline std::string PATH_TO_TESTING_LABELS = "D:\\My Projects\\AI Digit Recognizer\\src\\mnist_dataset\\t10k-labels.idx1-ubyte";
-    inline std::string PATH_TO_TESTING_IMAGES = "D:\\My Projects\\AI Digit Recognizer\\src\\mnist_dataset\\t10k-images.idx3-ubyte";
+    inline std::string PATH_TO_TESTING_LABELS = "G:\\My Projects\\AI Digit Recognizer\\src\\mnist_dataset\\t10k-labels.idx1-ubyte";
+    inline std::string PATH_TO_TESTING_IMAGES = "G:\\My Projects\\AI Digit Recognizer\\src\\mnist_dataset\\t10k-images.idx3-ubyte";
 }
 
 struct MNISTImageLabel {

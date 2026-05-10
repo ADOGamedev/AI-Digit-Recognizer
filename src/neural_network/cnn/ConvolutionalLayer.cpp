@@ -8,32 +8,36 @@ ConvolutionalLayer::ConvolutionalLayer(const int channels, const int kernels_cou
     }
 }
 
-Tensor ConvolutionalLayer::do_convolution() {
+Tensor ConvolutionalLayer::compute_output() {
+    output_tensor = do_max_pooling(do_convolution(image_tensor));
+    return output_tensor;
+}
+
+Tensor ConvolutionalLayer::do_convolution(const Tensor& img_tensor) {
     Tensor result;
     result.resize(kernels.size());
 
     for (int i = 0; i < kernels.size(); i++) {
         Kernel kernel = kernels[i];
-        result[i] = get_filtered_image(kernel);
+        result[i] = get_filtered_image(img_tensor, kernel);
     }
 
     return result;
 } 
 
-MatrixXd ConvolutionalLayer::get_filtered_image(const Kernel& kernel) {
-    MatrixXd filtered_image = MatrixXd::Zero(image_tensor[0].rows() - KERNEL_SIZE + 1, image_tensor[0].cols() - KERNEL_SIZE + 1);
+MatrixXd ConvolutionalLayer::get_filtered_image(const Tensor& img_tensor, const Kernel& kernel) {
+    MatrixXd filtered_image = MatrixXd::Zero(img_tensor[0].rows() - KERNEL_SIZE + 1, img_tensor[0].cols() - KERNEL_SIZE + 1);
     
-    
-    for (int y = 0; y < image_tensor[0].rows() - KERNEL_SIZE + 1; y++) {
-        for (int x = 0; x < image_tensor[0].cols() - KERNEL_SIZE + 1; x++) {
+    for (int y = 0; y < img_tensor[0].rows() - KERNEL_SIZE + 1; y++) {
+        for (int x = 0; x < img_tensor[0].cols() - KERNEL_SIZE + 1; x++) {
             double z = 0.0;
 
-            for (int channel = 0; channel < image_tensor.size(); channel++) {
-                MatrixXd region = image_tensor[channel].block(y, x, KERNEL_SIZE, KERNEL_SIZE);
+            for (int channel = 0; channel < img_tensor.size(); channel++) {
+                MatrixXd region = img_tensor[channel].block(y, x, KERNEL_SIZE, KERNEL_SIZE);
                 z += kernel.values[channel].cwiseProduct(region).sum();
             }
-
-            filtered_image(y, x) += ReLU(z);
+            //z += bias;
+            filtered_image(y, x) += std::abs(z);
         }
     }
 
@@ -41,12 +45,12 @@ MatrixXd ConvolutionalLayer::get_filtered_image(const Kernel& kernel) {
 }
 
 
-Tensor ConvolutionalLayer::do_max_pooling() {
+Tensor ConvolutionalLayer::do_max_pooling(const Tensor& img_tensor) {
     Tensor result = Tensor();
-    result.resize(image_tensor.size());
+    result.resize(img_tensor.size());
 
-    for (int i = 0; i < image_tensor.size(); i++) {
-        result[i] = max_pool_for_single_img(image_tensor[i]);
+    for (int i = 0; i < img_tensor.size(); i++) {
+        result[i] = max_pool_for_single_img(img_tensor[i]);
     }
 
     return result;
@@ -71,4 +75,17 @@ MatrixXd ConvolutionalLayer::max_pool_for_single_img(const MatrixXd& img) {
 
 void ConvolutionalLayer::set_image_tensor(const Tensor& img_tensor) {
     image_tensor = img_tensor;
+}
+
+Tensor ConvolutionalLayer::get_image_tensor() {
+    return image_tensor;
+}
+
+
+void ConvolutionalLayer::set_kernels(std::vector<Kernel>& k) {
+    kernels = k;
+}
+
+void ConvolutionalLayer::set_kernel_bias(const int index, const double bias) {
+    kernels[index].bias = bias;
 }
