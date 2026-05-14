@@ -34,7 +34,34 @@ void CNN::load_from_json(const std::string& path) {
             layers[i].set_kernel_bias(j, bias);
         }
     }
+
+    json_file.close();
 }
+
+
+void CNN::save_from_json(const std::string& path) {
+    nlohmann::json data;
+
+    data["biases"] = nlohmann::json::array();
+    for (int i = 0; i < layers_count; i++) {
+        data["biases"].push_back(layers[i].biases_to_list());
+    }
+
+    data["kernels"] = nlohmann::json::array();
+    for (int i = 0; i < layers_count; i++) {
+        data["kernels"].push_back(layers[i].kernels_to_list());
+    }
+
+
+    std::ofstream file(path);
+    if (!file.is_open()) {
+        Logger::logerr("ERROR: JSON could not be opened");
+        return;
+    }
+    file << data.dump(4);
+    file.close();
+}
+
 
 Kernel CNN::array_3D_to_kernel(const nlohmann::json& array) {
     int channels = array.size();

@@ -48,3 +48,20 @@ inline void print_image_matrix(const MatrixXd& img) {
     }
     Logger::log(line + "-+");
 }
+
+
+
+inline std::vector<std::vector<double>> eigen_matrix_to_vector(const Eigen::MatrixXd& mat) {
+    std::vector<std::vector<double>> vec(
+        mat.rows(),
+        std::vector<double>(mat.cols())
+    );
+
+    for (int i = 0; i < mat.rows(); ++i) {
+        for (int j = 0; j < mat.cols(); ++j) {
+            vec[i][j] = mat(i, j);
+        }
+    }
+
+    return vec;
+}

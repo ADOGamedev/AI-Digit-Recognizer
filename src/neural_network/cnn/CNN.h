@@ -20,6 +20,8 @@ public:
     CNN(const std::vector<int>& kernels_count_per_layer);
 
     void load_from_json(const std::string& path);
+    void save_from_json(const std::string& path);
+
     Kernel array_3D_to_kernel(const nlohmann::json& array);
 
 
