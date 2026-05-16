@@ -39,8 +39,8 @@ The panels imitate a "neuron", a line connected to a circle which can be more or
 - **`paint_widget.gd`**: among its properties we have:
     - **`image`, `compressed_image`, `centered_image`, `brush_overlay_image`**: they are images which store the drawn image, the downsized image, a centered version of the image and an image which just shows the brush, respectively.
 
-> [!NOTE]
-> `brush_overlay_image` is an `Image` instead of being drawn in the Godot `_draw()` function because then I can apply a shader to round corners.
+
+    > `brush_overlay_image` is an `Image` instead of being drawn in the Godot `_draw()` function because then I can apply a shader to round corners.
     
     - **`_image_dirty`, `_overlay_dirty`, `_centered_image_dirty`**: these are some boolean flags to update the images just when necessary. So if nothing new is drawn, it won't be updated.
 - **`controller_button.gd`**:
