@@ -14,7 +14,7 @@ config/name="AI Digit Recognizer"
 run/main_scene="uid://gsoudpyi8pxh"
 config/features=PackedStringArray("4.6", "Forward Plus")
 boot_splash/bg_color=Color(0, 0, 0, 1)
-boot_splash/image="uid://6xq3owxn1nkc"
+boot_splash/image="uid://cgokmpy6y0b60"
 config/icon="uid://bbvgfxkox47q2"
 boot_splash/minimum_display_time=1000
 
