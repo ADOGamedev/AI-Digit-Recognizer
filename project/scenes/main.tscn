@@ -5,6 +5,12 @@
 [ext_resource type="PackedScene" uid="uid://1jsk27fv3sje" path="res://scenes/output_vector.tscn" id="3_sugp2"]
 [ext_resource type="Script" uid="uid://coawra3og11x4" path="res://src/output_vector/output_vector.gd" id="4_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://dh8q5th2hiou5" path="res://scenes/big_digit_value_pair.tscn" id="5_tbgi4"]
+[ext_resource type="Shader" uid="uid://d2rq105grnjeo" path="res://src/logo.gdshader" id="6_o6xl0"]
+[ext_resource type="Texture2D" uid="uid://c3dfic0ksnqgl" path="res://assets/ADOGames_H_White.png" id="7_tipki"]
+[ext_resource type="FontFile" uid="uid://bka283m8mt5dm" path="res://assets/fonts/Inter_18pt-Black.ttf" id="8_ya4ey"]
+[ext_resource type="Texture2D" uid="uid://me8hre6gfkcd" path="res://assets/github_logo.png" id="9_eb6dy"]
+[ext_resource type="Texture2D" uid="uid://cbptx6ix6yevs" path="res://assets/edX_logo.png" id="10_trceg"]
+[ext_resource type="Texture2D" uid="uid://b014pqk2uivuo" path="res://assets/spain_icon.png" id="11_a8y0u"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sugp2"]
 shader = ExtResource("1_0wfyh")
@@ -14,6 +20,26 @@ shader_parameter/color3 = Color(0.026400004, 0.037079945, 0.24, 1)
 shader_parameter/speed = 0.055
 shader_parameter/intensity = 0.045
 shader_parameter/scale = 0.62
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_85g3d"]
+shader = ExtResource("6_o6xl0")
+shader_parameter/refraction = 0.012
+shader_parameter/frost = 2.5
+shader_parameter/edge_width = 0.002000000095
+shader_parameter/specular_power = 0.5190000246525
+shader_parameter/rim_strength = 0.178000008455
+shader_parameter/transparency = 1.0
+shader_parameter/tint = Color(0.9490196, 0.96862745, 1, 0.08627451)
+shader_parameter/tint_strength = 0.2130000101175
+shader_parameter/light_dir = Vector2(-4.287, -1.964)
+
+[sub_resource type="FontVariation" id="FontVariation_jkv2x"]
+base_font = ExtResource("8_ya4ey")
+spacing_glyph = 27
+spacing_space = 72
+
+[sub_resource type="FontVariation" id="FontVariation_jbj1t"]
+base_font = ExtResource("8_ya4ey")
 
 [node name="Main" type="Main" unique_id=814304318]
 
@@ -47,3 +73,135 @@ offset_left = -917.0
 offset_top = -192.0
 offset_right = -917.0
 offset_bottom = -192.0
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1523476057]
+visible = false
+material = SubResource("ShaderMaterial_85g3d")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 590.0
+offset_top = 377.0
+offset_right = -553.0
+offset_bottom = -369.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("7_tipki")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1756103223]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1449986161]
+layout_mode = 2
+theme_override_constants/separation = 68
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=2014586409]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 0.7137255)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 0.13725491)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/shadow_outline_size = 64
+theme_override_fonts/font = SubResource("FontVariation_jkv2x")
+theme_override_font_sizes/font_size = 109
+text = "AI DIGIT RECOGNIZER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="value_label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=489141516]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 4.33
+theme_override_colors/font_color = Color(0.93, 0.93, 0.93, 0.43529412)
+theme_override_fonts/font = SubResource("FontVariation_jbj1t")
+theme_override_font_sizes/font_size = 52
+text = "By: Adrián Blanco"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer" unique_id=1909753765]
+layout_mode = 2
+theme_override_constants/margin_left = 286
+theme_override_constants/margin_right = 391
+theme_override_constants/margin_bottom = 50
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer" unique_id=1290604249]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 385
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=599352510]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1612621997]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("9_eb6dy")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="value_label2" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1716539786]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 4.33
+theme_override_colors/font_color = Color(0.93, 0.93, 0.93, 0.43529412)
+theme_override_fonts/font = SubResource("FontVariation_jbj1t")
+theme_override_font_sizes/font_size = 52
+text = "ADOGamedev"
+horizontal_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=111980990]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/VBoxContainer2" unique_id=1961797315]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("10_trceg")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="value_label2" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/VBoxContainer2" unique_id=2070550370]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 4.33
+theme_override_colors/font_color = Color(0.93, 0.93, 0.93, 0.43529412)
+theme_override_fonts/font = SubResource("FontVariation_jbj1t")
+theme_override_font_sizes/font_size = 52
+text = "AdorianBuranko"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=126863792]
+layout_mode = 2
+theme_override_constants/separation = 38
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1676311123]
+layout_mode = 2
+texture = ExtResource("11_a8y0u")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="value_label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=2070485303]
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 4.33
+theme_override_colors/font_color = Color(0.93, 0.93, 0.93, 0.43529412)
+theme_override_fonts/font = SubResource("FontVariation_jbj1t")
+theme_override_font_sizes/font_size = 52
+text = "Spain, Valladolid, 16/05/2026"

@@ -13,17 +13,20 @@ config_version=5
 config/name="AI Digit Recognizer"
 run/main_scene="uid://gsoudpyi8pxh"
 config/features=PackedStringArray("4.6", "Forward Plus")
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/image="uid://6xq3owxn1nkc"
 config/icon="uid://bbvgfxkox47q2"
+boot_splash/minimum_display_time=1000
 
 [autoload]
 
 Global="*uid://dnlg070sp7uud"
-CustomImgSaver="*uid://sf1lurmjon05"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/mode=2
 window/stretch/mode="canvas_items"
 window/vsync/vsync_mode=0
 
