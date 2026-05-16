@@ -5,13 +5,35 @@ using namespace godot;
 void Main::_bind_methods() {
 }
 
+int main() {
+    Logger::Logger logger = Logger::Logger();
+    Logger::set_logger(&logger);
+    
+    MNISTDataset::load_data();
+    
+    NeuralNetwork neural_net;
+    neural_net.load_from_json("D:\\My Projects\\AI Digit Recognizer\\src\\neural_network\\neural_network.json");
+
+    Trainer trainer(&neural_net, 1.0);
+
+    trainer.test_network();
+    trainer.set_learning_rate(2.0);
+    trainer.train(35, true);   
+    trainer.set_learning_rate(0.05);
+    trainer.train(5, true);  
+    trainer.set_learning_rate(0.1);
+    trainer.train(5, true); 
+
+    neural_net.save_to_json("D:\\My Projects\\AI Digit Recognizer\\src\\neural_network\\third_attemp\\trained_network.json");
+}
+
 void Main::_ready() {
     godot_logger = GodotLogger();
     Logger::set_logger(&godot_logger);
 
     global = get_tree()->get_root()->get_node_or_null("Global");
 
-    neural_net.load_from_json("D:\\My Projects\\AI Digit Recognizer\\src\\neural_network\\final_trained_network.json");
+    neural_net.load_from_json("D:\\My Projects\\AI Digit Recognizer\\src\\neural_network\\third_attemp\\trained_network.json");
 
     if (!global) {
         Logger::log("Global node not found!");

@@ -2,13 +2,14 @@
 
 void Trainer::train(int epochs, bool test_after_epoch) {
     for (int i = 0; i < epochs; i++) {
+        Logger::log("-----------------------------");
+        Logger::log("Epoch " + std::to_string(i));
+
         for (std::vector<MNISTImageLabel>& batch : MNISTDataset::batches) {
             update_net_for_a_single_batch(batch);
         }
 
         if (test_after_epoch) {
-            Logger::log("-----------------------------");
-            Logger::log("Epoch " + std::to_string(i));
             test_network();
         }
     }
@@ -25,10 +26,10 @@ void Trainer::update_net_for_a_single_batch(std::vector<MNISTImageLabel>& batch)
     }
 
     for (int i = 0; i < accumulated.biases.size(); i++) {
-        network->change_biases(i + 1, -learning_rate * accumulated.biases[i]);
+        network->change_biases(i + 1, -learning_rate / batch.size() * accumulated.biases[i]);
     }
     for (int i = 0; i < accumulated.weights.size(); i++) {
-        network->change_weights(i, -learning_rate * accumulated.weights[i]);
+        network->change_weights(i, -learning_rate / batch.size() * accumulated.weights[i]);
     }
     
 }
