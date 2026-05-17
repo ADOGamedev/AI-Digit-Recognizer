@@ -38,6 +38,7 @@ double benchmark(const char* name, double (*fun)(double)) {
 	return t_ns;
 }
 
+// Code generated with AI
 double benchmark_vec(const char* name,
                      VectorXd (*fun)(const VectorXd&)) {
     clock_t start, stop;

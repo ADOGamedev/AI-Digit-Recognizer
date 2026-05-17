@@ -1,3 +1,6 @@
+// Code by Arpaka
+// https://github.com/arpaka/mnist-loader
+
 #include "mnist_loader.h"
 #include <fstream>
 #include <assert.h>

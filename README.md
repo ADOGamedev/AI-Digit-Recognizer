@@ -1,5 +1,6 @@
 # **AI DIGIT RECOGNIZER**
 #### **Video Demo:**  https://www.youtube.com/watch?v=-n1uytGfoBQ
+#### **Github repo:** https://github.com/ADOGamedev/AI-Digit-Recognizer
 #### **Description:** This is an application made in Godot 4.6 and C++ through GDExtensions, it consists of a canvas with some buttons in which you can draw. As you draw, a Neural Network written in C++ will try to predict what digit is currently drawn.
 
 ## **GODOT UI**
@@ -13,7 +14,7 @@ The Godot scenes are in `project/scenes/`, the GDScript source code is in `proje
 
 ### **Scenes**
 
-- **`main.tscn`**: this is, well, the main scene. It just has an instance of other scenes to put it all together, it also has a background ColorRect which has a subtle animation with colors changing between different shades of blue and purple.
+- **`main.tscn`**: this is, well, the main scene. It just has an instance of other scenes to put it all together, it also has a background `ColorRect` which has a subtle animation with colors changing between different shades of blue and purple.
 
 - **`paint_widget.tscn`**: although not the main scene, it is the most important part. This scene handles drawing, the compression and pre-process of the drawn image before passing it to the neural network.
 
@@ -26,12 +27,12 @@ The panels imitate a "neuron", a line connected to a circle which can be more or
 
 - **`output_vector.tscn`**: this is just ten output neurons in a column, each with its corresponding digit, which indicates the full output vector of the neural network.
 
-- **`big_digit_value_pair.tscn`**: this is a bigger version of that digit-confidence pair each output neuron had, used to display the digit the network guessed.
-
-### **GDScript Code**
+- **`big_digit_value_pair.tscn`**: this is a bigger version of that digit-confidence pair each output neuron has, used to display the digit the network guessed.
 
 > [!WARNING]
-> Most of the shaders are generated with AI (I dont't know how to write them yet), as well as some parts of the GDScript code. Used AIs: Claude and ChatGPT. Though, I have some intuition on how each AI-generated part works.
+> Most of the shaders are generated with AI (I dont't know how to write them yet), as well as some parts of the GDScriptor C++ code. Used AIs: Claude and ChatGPT. Though, I have some intuition on how each AI-generated part works.
+
+### **GDScript Code**
 
 > [!NOTE]
 > Each script is found inside a folder with the same name as the scene it is associated with, except `global.gd`, `main.gdshader`, and `logo.gdshader`.
@@ -74,10 +75,58 @@ The panels imitate a "neuron", a line connected to a circle which can be more or
 ### **C++ code**
 
 This is the actual logic of the neural network, stored in the `src/` folder.
+> [!NOTE]
+> I decided to do the network in C++ as I can better understand the underling details, and as I already done other stuff with Godot + C++, it was better for me.
 
-- **`main/main.cpp` and `main/main.h`**: this is the Godot Extensions that communicates with the GDScript code via Global, it also creates the `NeuralNetwork`. Moreover, in `main/main.h` there is defined a `GodotLogger` which relates with `logger/Logger` code.
+- **`main/main.cpp` and `main/main.h`**: this is a `Main` class which is the Godot Extension that communicates with the GDScript code via `Global`, it also creates the `NeuralNetwork`. Moreover, in `main/main.h` there is defined a `GodotLogger` which relates with `logger/Logger` code.
+
+    I also used this file for the process of training (the amount of batches is an over-kill, I didn't know how many I needed). This managed to train the network up to somewhat more than 98% accuracy in the MNIST Dataset:
+    ```c++
+    int main() {
+        Logger::Logger logger = Logger::Logger();
+        Logger::set_logger(&logger);
+
+        MNISTDataset::load_data();
+
+        NeuralNetwork neural_net;
+        neural_net.load_from_json("...\\src\\neural_network\\neural_network.json");
+
+        Trainer trainer(&neural_net, 2.0);
+        trainer.train(1000);
+        trainer.set_learning_rate(0.5);
+        trainer.train(2000);
+        trainer.set_learning_rate(0.1);
+        trainer.train(2000);
+
+        neural_net.save_to_json("...\\src\\neural_network\\second_attemp\\trained_network2.json");
+    }
+    ```
 
 - **`logger/Logger.cpp` and `logger/Logger.h`**: this allows me to set a `Logger` which uses `std::cout` or `godot::UtilityFunctions::print()` to print out in the terminal or Godot terminal.
+
+- **`neural_network/NeuralNetwork.cpp` and `neural_network/NeuralNetwork.h`**: the most important one, it contains a `Layer` struct, a `WeightMatrix` struct and the `NeuralNetwork` class. This last one is responsible of loading and saving the network to a JSON file and doing the forward pass to compute the output. The other structs are just to abstract some bit of code and make it easier to work with collections of vectors and matrices.
+
+- **`register_types/register_types.cpp`and `register_types/register_types.h`**: GDExtension speciffic stuff, to register the `Main` class.
+
+- **`thirdparty/eigen-5.0.0`**: the Eigen library to do linear algebra in C++.
+
+- **`thirdparty/nlohmann`**: a C++ library to work with JSON files.
+
+> [!WARNING]
+> The following code that I'm going to explain was deleted but it was used in the process of training the network and can be found in other commits of the repo.
+
+- **`utils/utils.h`**: a randf function, to initialize randomly the network.
+
+- **`trainer/Trainer.cpp` and `trainer/Trainer.h`**: it does the backpropagation algorithm using Stochastic gradient descent with mini-batches, updating the weights and biases of the network according to the learning rate.
+
+- **`thirdparty/mnist-loader`**: some code I found in this Github repo: https://github.com/arpaka/mnist-loader
+which just facilitates the reading of the MNSIT binary files.
+
+- **`mnist_dataset/`**: stores the binary files of the famous MNIST Dataset used to train the network. It also contains `MNISTLoader.h`, which defines a namespace in which there is stores the train and test examples using the struct `MNISTImageLabel`, it also has some functions to read the dataset using `mnist-loader` and adapt it to my format.
+
+- **`tests/sigmoids_benchmark`**: a benchmark I found here:
+https://gist.github.com/astanin/5270668
+which compares different non-linear activation functions for the neural network. Which I extended with the help of AI to compare the activation function when applied to a vector.
 
 
 
