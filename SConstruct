@@ -17,9 +17,5 @@ library = env.SharedLibrary(
     "project/bin/{}".format(lib_filename),
     source=sources,
 )
-library = env.Program(
-    "build/ai_digit_recognizer",
-    source=sources,
-)
 
 Default(library) # type: ignore

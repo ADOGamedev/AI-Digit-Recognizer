@@ -1,7 +1,7 @@
 # **AI DIGIT RECOGNIZER**
 #### **Video Demo:**  https://www.youtube.com/watch?v=-n1uytGfoBQ
 #### **Github repo:** https://github.com/ADOGamedev/AI-Digit-Recognizer
-#### **Description:** This is an application made in Godot 4.6 and C++ through GDExtensions; it consists of a canvas with some buttons in which you can draw. As you draw, a Neural Network written in C++ will try to predict what digit is currently drawn.
+#### **Description:** This is an application made in Godot 4.6 and C++ through GDExtensions[^1]; it consists of a canvas with some buttons in which you can draw. As you draw, a Neural Network written in C++ will try to predict what digit is currently drawn.
 
 ## **GODOT UI**
 ![A screenshot of the app with a two drawn](screenshots/screenshot1.png)
@@ -9,8 +9,8 @@
 This is the thing you'll see: everything related to the user interface and image pre-processing happens in the `project/` folder.
 The Godot scenes are in `project/scenes/`, the GDScript source code is in `project/src/`, and all the images, fonts, and Godot themes are in `project/assets/`.
 
-> [!note]
-> The `project/bin/` folder stores the `.gdextension` and `.dll` files that make C++ work in Godot.
+> [!NOTE]
+> The `project/bin/` folder stores the `.gdextension` and `.dll` files that make C++ work in Godot.[^1]
 
 ### **Scenes**
 
@@ -48,7 +48,7 @@ The panels imitate a "neuron", a line connected to a circle which can be more or
 
     - **`_process(delta)`**: this is the main loop, it calls `handle_input()` and other functions to update when neccesary.
 
-    - **`_handle_input()`**: it detects mouse inputs and calls `draw_capsule(...)` by getting the current mouse position and the previous one.
+    - **`handle_input()`**: it detects mouse inputs and calls `draw_capsule(...)` by getting the current mouse position and the previous one.
 
     - **`draw_capsule(...)`**: it calculates the distance to the segment joining pos1 and pos2 for each point, and if it's closer than the brush radius, it colors that point with the corresponding color.
 
@@ -86,7 +86,7 @@ This is the actual logic of the neural network, stored in the `src/` folder.
 
 - **`main/main.cpp` and `main/main.h`**: this is a `Main` class, which is the Godot Extension that communicates with the GDScript code via `Global`, it also creates the `NeuralNetwork`. Moreover, in `main/main.h` there is defined a `GodotLogger` which relates to the `logger/Logger` code.
 
-    I also used this file for the process of training (the amount of batches is an over-kill, I didn't know how many I needed). This managed to train the network up to somewhat more than 98% accuracy in the MNIST Dataset:
+    I also used this file for the process of training (the amount of batches is an over-kill, I didn't know how many I needed). This managed to train the network up to somewhat more than 98% accuracy in the MNIST Dataset[^4]:
     ```c++
     int main() {
         Logger::Logger logger = Logger::Logger();
@@ -112,23 +112,23 @@ This is the actual logic of the neural network, stored in the `src/` folder.
 
 - **`neural_network/NeuralNetwork.cpp` and `neural_network/NeuralNetwork.h`**: the most important one, it contains a `Layer` struct, a `WeightMatrix` struct and the `NeuralNetwork` class. This last one is responsible of loading and saving the network to a JSON file and doing the forward pass to compute the output. The other structs are just to abstract some bit of code and make it easier to work with collections of vectors and matrices.
 
-- **`register_types/register_types.cpp`and `register_types/register_types.h`**: GDExtension speciffic stuff, to register the `Main` class.
+- **`register_types/register_types.cpp`and `register_types/register_types.h`**: GDExtension[^1] speciffic stuff, to register the `Main` class.
 
-- **`thirdparty/eigen-5.0.0`**: the Eigen library to do linear algebra in C++.
+- **`thirdparty/eigen-5.0.0`**: the Eigen[^2] library to do linear algebra in C++.
 
-- **`thirdparty/nlohmann`**: a C++ library to work with JSON files.
+- **`thirdparty/nlohmann`**: a C++ library to work with JSON[^3] files.
 
 > [!WARNING]
 > The following code could be deleted as the neural network is already trained.
 
 - **`utils/utils.h`**: a randf function, to initialize randomly the network.
 
-- **`trainer/Trainer.cpp` and `trainer/Trainer.h`**: it does the backpropagation algorithm using Stochastic gradient descent with mini-batches, updating the weights and biases of the network according to the learning rate.
+- **`trainer/Trainer.cpp` and `trainer/Trainer.h`**: it does the backpropagation algorithm using Stochastic gradient descent[^5] with mini-batches, updating the weights and biases of the network according to the learning rate.
 
 - **`thirdparty/mnist-loader`**: some code I found in this Github repo: https://github.com/arpaka/mnist-loader
-which just facilitates the reading of the MNSIT binary files.
+which just facilitates the reading of the MNSIT[^4] binary files.
 
-- **`mnist_dataset/`**: stores the binary files of the famous MNIST Dataset used to train the network. It also contains `MNISTLoader.h`, which defines a namespace in which there is stores the train and test examples using the struct `MNISTImageLabel`, it also has some functions to read the dataset using `mnist-loader` and adapt it to my format.
+- **`mnist_dataset/`**: stores the binary files of the famous MNIST Dataset[^4] used to train the network. It also contains `MNISTLoader.h`, which defines a namespace in which there is stores the train and test examples using the struct `MNISTImageLabel`, it also has some functions to read the dataset using `mnist-loader` and adapt it to my format.
 
 - **`tests/sigmoids_benchmark`**: a benchmark I found here:
 https://gist.github.com/astanin/5270668
@@ -168,6 +168,13 @@ The way I chose to store the neural network is via JSON files with the following
     ]
 }
 ```
+
+[^1]: https://docs.godotengine.org/en/4.4/tutorials/scripting/gdextension/gdextension_cpp_example.html
+[^2]: https://libeigen.gitlab.io/
+[^3]: https://github.com/nlohmann/json
+[^4]: https://www.kaggle.com/datasets/hojjatk/mnist-dataset
+[^5]: https://www.youtube.com/watch?v=aircAruvnKk&list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi  
+http://neuralnetworksanddeeplearning.com/
 
 
 
