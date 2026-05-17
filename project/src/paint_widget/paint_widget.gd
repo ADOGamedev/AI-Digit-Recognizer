@@ -145,7 +145,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		_overlay_dirty = true
 
-
+# Generated with AI
 func _update_overlay() -> void:
 	if !brush_overlay_image or !brush_overlay.texture:
 		return
@@ -229,7 +229,7 @@ func update_centered_image_array() -> void:
 			var idx = (y * MNIST_DATASET_IMAGE_SIZE + x) * 4
 			centered_image_array[y * MNIST_DATASET_IMAGE_SIZE + x] = raw[idx] / 255.0
 
-
+# Minimal help of AI for Godot-specific stuff
 func update_centered_image() -> void:
 	centered_image.fill(Color.BLACK)
 	
@@ -306,7 +306,7 @@ func update_global() -> void:
 	Global.update_requested = true
 	Global.input_values = centered_image_array
 
-
+# Generated with help of AI. Though, I had implemented simillar stuff my self
 func draw_capsule(pos1: Vector2, pos2: Vector2, color: Color) -> void:
 	var radius = brush_size / 2.0 + ANTIALISING_WIDTH
 

@@ -6,8 +6,8 @@
 #include <Eigen/Dense>
 #include <json.hpp>
 
-#include "../../utils/utils.h"
-#include "../../logger/Logger.h"
+#include "../utils/utils.h"
+#include "../logger/Logger.h"
 
 using Eigen::VectorXd, Eigen::MatrixXd;
 
@@ -53,13 +53,13 @@ struct WeightMatrix {
 };
 
 
-class FCNeuralNetwork {
+class NeuralNetwork {
 
 public:
-    FCNeuralNetwork() = default;
+    NeuralNetwork() = default;
 
     template <size_t N>
-    FCNeuralNetwork(std::array<int, N> neurons_per_layer) {
+    NeuralNetwork(std::array<int, N> neurons_per_layer) {
         layers_count = N;
 
         layers.resize(N);
@@ -77,7 +77,7 @@ public:
     }
     
     template <size_t N, size_t W>
-    FCNeuralNetwork(std::array<Layer, N>& layers_arr, std::array<WeightMatrix, W>& weights) {
+    NeuralNetwork(std::array<Layer, N>& layers_arr, std::array<WeightMatrix, W>& weights) {
         const int weight_matrices_count = std::min(W, N - 1);
 
         layers.resize(N);

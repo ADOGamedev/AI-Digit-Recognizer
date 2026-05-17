@@ -5,11 +5,11 @@
 ## **GODOT UI**
 ![A screenshot of the app with a two drawn](screenshots/screenshot1.png)
 
-This is the thing you'll see, everything related to user interface and image pre-procesing happens in the `project/` folder
-the Godot scenes are in `project/scenes/`, the GDScript source code is in `project/src/` and all the images, fonts, and Godot themes are in `project/assets`.
+This is the thing you'll see, everything related to user interface and image pre-procesing happens in the `project/` folder.
+The Godot scenes are in `project/scenes/`, the GDScript source code is in `project/src/` and all the images, fonts, and Godot themes are in `project/assets/`.
 
 > [!note]
-> The `project/bin/` folder stores the `.gdextension` and `.dll`s that make C++ work in Godot.
+> The `project/bin/` folder stores the `.gdextension` and `.dll` files that make C++ work in Godot.
 
 ### **Scenes**
 
@@ -21,7 +21,7 @@ the Godot scenes are in `project/scenes/`, the GDScript source code is in `proje
 
 - **`paint_widget_controller.tscn`**: this scene just mixes four controller buttons, the paint widget and decorates them with a liquid-glass-styled panel.
 
-- **`output_neurons.tscn`**: this consists of two iquid-glass-styled panels and two labels with a translucent style.
+- **`output_neurons.tscn`**: this consists of two liquid-glass-styled panels and two labels with a translucent style.
 The panels imitate a "neuron", a line connected to a circle which can be more or less activated, that is controlled through a shader which tints it white depending on the value. One of the labels just indicates what number the neuron corresponds to, the smaller one indicates the confidence of that number being the one you drew.
 
 - **`output_vector.tscn`**: this is just ten output neurons in a column, each with its corresponding digit, which indicates the full output vector of the neural network.
@@ -31,21 +31,54 @@ The panels imitate a "neuron", a line connected to a circle which can be more or
 ### **GDScript Code**
 
 > [!WARNING]
-> Most of the shaders are generated with AI (I dont't know how to write them yet), as well as some parts of the GDScript code.
+> Most of the shaders are generated with AI (I dont't know how to write them yet), as well as some parts of the GDScript code. Used AIs: Claude and ChatGPT. Though, I have some intuition on how each AI-generated part works.
 
 > [!NOTE]
 > Each script is found inside a folder with the same name as the scene it is associated with, except `global.gd`, `main.gdshader`, and `logo.gdshader`.
 
-- **`paint_widget.gd`**: among its properties we have:
+- **`paint_widget.gd`**: this is the most important one, it handles image resizing, input detection and drawing, among its properties we have:
     - **`image`, `compressed_image`, `centered_image`, `brush_overlay_image`**: they are images which store the drawn image, the downsized image, a centered version of the image and an image which just shows the brush, respectively.
-
 
         > `brush_overlay_image` is an `Image` instead of being drawn in the Godot `_draw()` function because then I can apply a shader to round corners.
     
     - **`_image_dirty`, `_overlay_dirty`, `_centered_image_dirty`**: these are some boolean flags to update the images just when necessary. So if nothing new is drawn, it won't be updated.
-- **`controller_button.gd`**:
-- **`paint_widget_controller.gd`**:
-- **`output_neurons.gd`**:
-- **`output_vector.gd`**:
-- **`big_digit_value_pair.gd`**:
+
+    And these are the most important functions:
+
+    - **`_process(delta)`**: this is the main loop, it calls `handle_input()` and other functions to update when neccesary.
+
+    - **`_handle_intput()`**: it detects mouse inputs and calls `draw_capsule(...)` by getting the current mouse position and the previous one.
+
+    - **`draw_capsule(...)`**: it calculates the distance to the segment joining pos1 and pos2 for each point, and if its closer than the brush radius, it colors that point with the corresponding color.
+
+    - **`update_centered_image()`**: it calculates the centroid of the image by looking at the colored pixels, then it centers the drawing. Next, it calculates the target size of the image so that it is contained within some margins of the full image. Finally, it resizes and merges the new centered image, after which it updates the array that will be passed into the neural network.
+
+- **`global.gd`**: just a script every other can access, which stores the input and output of the neural network.
+
+- **`controller_button.gd`**: this is a (not so well written) script which detects when the mouse interacts with the button to animate the button smoothly, using the Godot `Tween`.
+
+- **`paint_widget_controller.gd`**: simple script, detects when each button is pressed and calls the corresponging function of `PaintWidget`.
+
+- **`output_neuron.gd`**: also a simple script, it updates the neuron and label so that it shows the current value.
+
+- **`output_vector.gd`**: just updates the ten neurons with the output values of the neural network.
+
+- **`big_digit_value_pair.gd`**: gets the guessed digit and updates the labels accordingly.
+
+### **GDSL (Godot Shading Lenguage) scripts**
+
+- **`main.gdshader`**: it gives the effect of a smooth animation with varying colors, used in the background of the app.
+
+<-- TODO !-->
+
+### **C++ code**
+
+This is the actual logic of the neural network, stored in the `src/` folder.
+
+- **`main/main.cpp` and `main/main.h`**: this is the Godot Extensions that communicates with the GDScript code via Global, it also creates the `NeuralNetwork`. Moreover, in `main/main.h` there is defined a `GodotLogger` which relates with `logger/Logger` code.
+
+- **`logger/Logger.cpp` and `logger/Logger.h`**: this allows me to set a `Logger` which uses `std::cout` or `godot::UtilityFunctions::print()` to print out in the terminal or Godot terminal.
+
+
+
 

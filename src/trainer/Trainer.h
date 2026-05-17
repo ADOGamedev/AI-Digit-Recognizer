@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../logger/Logger.h"
-#include "../neural_network/fully_connected/FCNeuralNetwork.h"
+#include "../neural_network/NeuralNetwork.h"
 
 #include "../mnist_dataset/MNISTDataset.h"
 
@@ -32,7 +32,7 @@ class Trainer {
 
 public:
     Trainer() = default;
-    Trainer(FCNeuralNetwork* neural_net, double learning_rate) :
+    Trainer(NeuralNetwork* neural_net, double learning_rate) :
         network(neural_net), learning_rate(learning_rate) {}
 
     
@@ -48,6 +48,6 @@ public:
     void set_learning_rate(const double& v) { learning_rate = v; }
     
 private:
-    FCNeuralNetwork* network;
+    NeuralNetwork* network;
     double learning_rate;
 };
