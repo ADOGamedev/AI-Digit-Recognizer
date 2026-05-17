@@ -1,6 +1,7 @@
 shader_type canvas_item;
 
 // Liquid Glass UI Shader v2 - by sentinelcmd
+// https://godotshaders.com/shader/liquid-glass-ui-customizable/
 
 uniform sampler2D screen_texture : hint_screen_texture, filter_linear_mipmap;
 

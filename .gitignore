@@ -1,4 +1,5 @@
 .vscode/
 build/
+screenshots/
 *.obj
 *.o

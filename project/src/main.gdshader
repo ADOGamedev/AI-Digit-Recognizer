@@ -1,3 +1,6 @@
+// Made by Sleeth (Sleethcc on Github)
+// I dont know if he used AI or not
+
 shader_type canvas_item;
 
 uniform vec4 color1 : source_color = vec4(0.2, 0.7, 1.0, 1.0);

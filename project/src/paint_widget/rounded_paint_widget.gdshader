@@ -1,3 +1,5 @@
+// Generated with AI
+
 shader_type canvas_item;
 
 uniform float radius : hint_range(0.0, 0.5) = 0.1;
