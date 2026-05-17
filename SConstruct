@@ -5,6 +5,10 @@ import sys
 env = SConscript("godot-cpp/SConstruct") # type: ignore
 
 env.Append(CPPPATH=["src/", "src/thirdparty/eigen-5.0.0/", "src/thirdparty/nlohmann/","src/thirdparty/mnist-loader/include/"])
+if env["target"] == "template_release":
+    env.Append(CCFLAGS=["/MT", "/EHsc"])
+else:
+    env.Append(CCFLAGS=["/MTd", "/EHsc"])
 
 sources = Glob("src/*.cpp") # type: ignore
 sources += Glob("src/**/*.cpp") # type: ignore
