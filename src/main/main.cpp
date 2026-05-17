@@ -11,7 +11,10 @@ void Main::_ready() {
 
     global = get_tree()->get_root()->get_node_or_null("Global");
 
-    neural_net.load_from_json("D:\\My Projects\\AI Digit Recognizer\\src\\neural_network\\final_trained_network.json");
+    std::string basePath = getExePath();
+    std::string jsonPath = basePath + "\\neural_network\\final_trained_network.json";
+
+    neural_net.load_from_json(jsonPath);
 
     if (!global) {
         Logger::log("Global node not found!");

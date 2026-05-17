@@ -58,7 +58,7 @@ The panels imitate a "neuron", a line connected to a circle which can be more or
 
 - **`controller_button.gd`**: this is a (not so well-written) script that detects when the mouse interacts with the button to animate the button smoothly, using the Godot `Tween`.
 
-- **`paint_widget_controller.gd`**: simple script, detects when each button is pressed and calls the corresponding  function of `PaintWidget`.
+- **`paint_widget_controller.gd`**: simple script, detects when each button is pressed and calls the corresponding function of `PaintWidget`.
 
 - **`output_neuron.gd`**: also a simple script, it updates the neuron and label so that it shows the current value.
 
@@ -72,7 +72,7 @@ The panels imitate a "neuron", a line connected to a circle which can be more or
 
 - **`output_neuron/neuron_shader.gdshader`**: it rounds the neuron and tints it white below a certain threshold, the value of the output neuron.
 
-- **`paint_widget/rounded_paint_widget.gdshader`**: it rounds the paint widget so that it looks nice when placed inside `PaintWidgetController`
+- **`paint_widget/rounded_paint_widget.gdshader`**: it rounds the paint widget so that it looks nice when placed inside `PaintWidgetController`.
 
 - **`paint_widget_controller/liquid_glass.gdshader`**: shader by sentinelcmd, https://godotshaders.com/shader/liquid-glass-ui-customizable/.
 It makes a `ColorRect` have the Apple liquid glass style.
@@ -84,9 +84,9 @@ This is the actual logic of the neural network, stored in the `src/` folder.
 > [!NOTE]
 > I decided to do the network in C++ as I can better understand the underlying details, and as I have already done other stuff with Godot + C++, it was better for me.
 
-- **`main/main.cpp` and `main/main.h`**: this is a `Main` class, which is the Godot Extension that communicates with the GDScript code via `Global`, it also creates the `NeuralNetwork`. Moreover, in `main/main.h` there is defined a `GodotLogger` which relates to the `logger/Logger` code.
+- **`main/main.cpp` and `main/main.h`**: this is a `Main` class, which is the Godot Extension that communicates with the GDScript code via `Global`, it also creates the `NeuralNetwork`. Moreover, in `main/main.h`, there is defined a `GodotLogger` which relates to the `logger/Logger` code.
 
-    I also used this file for the process of training (the amount of batches is an over-kill, I didn't know how many I needed). This managed to train the network up to somewhat more than 98% accuracy in the MNIST Dataset[^4]:
+    I also used this file for the process of training (the number of batches is an overkill; I didn't know how many I needed). This managed to train the network up to somewhat more than 98% accuracy in the MNIST Dataset[^4]:
     ```c++
     int main() {
         Logger::Logger logger = Logger::Logger();
@@ -110,29 +110,30 @@ This is the actual logic of the neural network, stored in the `src/` folder.
 
 - **`logger/Logger.cpp` and `logger/Logger.h`**: this allows me to set a `Logger` which uses `std::cout` or `godot::UtilityFunctions::print()` to print out in the terminal or Godot terminal.
 
-- **`neural_network/NeuralNetwork.cpp` and `neural_network/NeuralNetwork.h`**: the most important one, it contains a `Layer` struct, a `WeightMatrix` struct and the `NeuralNetwork` class. This last one is responsible of loading and saving the network to a JSON file and doing the forward pass to compute the output. The other structs are just to abstract some bit of code and make it easier to work with collections of vectors and matrices.
+- **`neural_network/NeuralNetwork.cpp` and `neural_network/NeuralNetwork.h`**: the most important one, it contains a `Layer` struct, a `WeightMatrix` struct, and the `NeuralNetwork` class. This last one is responsible for loading and saving the network to a JSON file and doing the forward pass to compute the output. The other structs are just to abstract some bit of code and make it easier to work with collections of vectors and matrices.
 
-- **`register_types/register_types.cpp`and `register_types/register_types.h`**: GDExtension[^1] speciffic stuff, to register the `Main` class.
+- **`register_types/register_types.cpp`and `register_types/register_types.h`**: GDExtension[^1] specific stuff, to register the `Main` class.
 
 - **`thirdparty/eigen-5.0.0`**: the Eigen[^2] library to do linear algebra in C++.
 
 - **`thirdparty/nlohmann`**: a C++ library to work with JSON[^3] files.
 
+- **`utils/utils.h`**: a randf function, to initialize the network randomly, and an AI-Generated function that just gets the `.exe` path to access `final_trained_network.json` in `main.cpp`.
+
 > [!WARNING]
 > The following code could be deleted as the neural network is already trained.
 
-- **`utils/utils.h`**: a randf function, to initialize randomly the network.
 
 - **`trainer/Trainer.cpp` and `trainer/Trainer.h`**: it does the backpropagation algorithm using Stochastic gradient descent[^5] with mini-batches, updating the weights and biases of the network according to the learning rate.
 
 - **`thirdparty/mnist-loader`**: some code I found in this Github repo: https://github.com/arpaka/mnist-loader
 which just facilitates the reading of the MNSIT[^4] binary files.
 
-- **`mnist_dataset/`**: stores the binary files of the famous MNIST Dataset[^4] used to train the network. It also contains `MNISTLoader.h`, which defines a namespace in which there is stores the train and test examples using the struct `MNISTImageLabel`, it also has some functions to read the dataset using `mnist-loader` and adapt it to my format.
+- **`mnist_dataset/`**: stores the binary files of the famous MNIST Dataset[^4] used to train the network. It also contains `MNISTLoader.h`, which defines a namespace in which the train and test examples are stored using the struct `MNISTImageLabel`; it also has some functions to read the dataset using `mnist-loader` and adapt it to my format.
 
 - **`tests/sigmoids_benchmark`**: a benchmark I found here:
 https://gist.github.com/astanin/5270668
-which compares different non-linear activation functions for the neural network. Which I extended with the help of AI to compare the activation function when applied to a vector.
+which compares different non-linear activation functions for the neural network. I also extended it using AI to compare the activation function when applied to a vector.
 
 ### **Neural Network JSON saving**
 
